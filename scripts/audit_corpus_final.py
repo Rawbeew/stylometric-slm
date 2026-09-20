@@ -26,6 +26,7 @@ URLS_FILE = ROOT / "scripts/pull_gutenberg.py"
 
 URLS_INDEX = {
     # (lang, author): [urls]
+    # Updated 2026-09-20 — match the corrected URLs in scripts/pull_gutenberg.py
     ("en","dickens"): [
         "https://www.gutenberg.org/cache/epub/98/pg98.txt",
         "https://www.gutenberg.org/cache/epub/1400/pg1400.txt",
@@ -37,7 +38,9 @@ URLS_INDEX = {
         "https://www.gutenberg.org/cache/epub/3176/pg3176.txt",
     ],
     ("en","woolf"): [
-        "https://www.gutenberg.org/cache/epub/57496/pg57496.txt",
+        # FIXED from pg57496 (Mary Johnston) → pg1245 (Night and Day) + pg5670 (Jacob's Room)
+        "https://www.gutenberg.org/cache/epub/1245/pg1245.txt",
+        "https://www.gutenberg.org/cache/epub/5670/pg5670.txt",
     ],
     ("en","joyce"): [
         "https://www.gutenberg.org/cache/epub/4217/pg4217.txt",
@@ -52,12 +55,14 @@ URLS_INDEX = {
         "https://www.gutenberg.org/cache/epub/2610/pg2610.txt",
     ],
     ("fr","zola"): [
-        "https://www.gutenberg.org/cache/epub/8609/pg8609.txt",
-        "https://www.gutenberg.org/cache/epub/5320/pg5320.txt",
+        # FIXED from pg8609 (404) + pg5320 (E.P. Roe English)
+        # to pg6497 (L'Assommoir FR) + pg5711 (Germinal FR)
+        "https://www.gutenberg.org/cache/epub/6497/pg6497.txt",
+        "https://www.gutenberg.org/cache/epub/5711/pg5711.txt",
     ],
     ("fr","flaubert"): [
+        # FIXED from pg2413 + pg26839 (404) to just pg2413 (Madame Bovary FR)
         "https://www.gutenberg.org/cache/epub/2413/pg2413.txt",
-        "https://www.gutenberg.org/cache/epub/26839/pg26839.txt",
     ],
     ("fr","maupassant"): [
         "https://www.gutenberg.org/cache/epub/3090/pg3090.txt",
@@ -69,13 +74,18 @@ URLS_INDEX = {
         "https://www.gutenberg.org/cache/epub/2000/pg2000.txt",
     ],
     ("es","galdos"): [
-        "https://www.gutenberg.org/cache/epub/56462/pg56462.txt",
+        # FIXED from pg56462 (Gibson, English) to pg17013 (Fortunata y Jacinta) + pg17340 (Marianela)
+        "https://www.gutenberg.org/cache/epub/17013/pg17013.txt",
+        "https://www.gutenberg.org/cache/epub/17340/pg17340.txt",
     ],
     ("es","pardo_bazan"): [
-        "https://www.gutenberg.org/cache/epub/49990/pg49990.txt",
+        # FIXED from pg49990 (English lit history) to pg17491 (La Tribuna) + pg68452 (La piedra angular)
+        "https://www.gutenberg.org/cache/epub/17491/pg17491.txt",
+        "https://www.gutenberg.org/cache/epub/68452/pg68452.txt",
     ],
     ("it","manzoni"): [
-        "https://www.gutenberg.org/cache/epub/4555/pg4555.txt",
+        # FIXED from pg4555 (Symonds, English) to pg45334 (I promessi sposi, IT)
+        "https://www.gutenberg.org/cache/epub/45334/pg45334.txt",
     ],
 }
 
@@ -109,6 +119,8 @@ def get_url_meta(url):
 def norm(s):
     s = s.lower().strip()
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+    # Replace underscores (used as separators in dir names) with spaces
+    s = s.replace("_", " ")
     return re.sub(r"\s+", " ", s).rstrip(".,;:")
 
 
@@ -120,10 +132,17 @@ def check_url(url, expected_dir_author):
     declared_author = norm(meta.get("author") or "")
     expected_author_norm = norm(expected_dir_author)
     title = meta.get("title")
-    # If the declared author matches the directory expectation
-    expected_last = expected_author_norm.split()[-1]
+    # Compare against any token in the declared author. The author string
+    # often has a title (e.g. "condesa de") before the surname.
+    expected_tokens = expected_author_norm.split()
     declared_tokens = declared_author.split() if declared_author else []
-    matches = any(expected_last in t for t in declared_tokens)
+    # If the expected contains multiple tokens (e.g. "pardo bazan"), accept
+    # if any of them appears in declared; otherwise accept if expected last
+    # matches anything.
+    matches = any(tok in declared_tokens for tok in expected_tokens) if expected_tokens else False
+    if not matches and expected_tokens:
+        # Fallback: substring check on any declared token
+        matches = any(expected_tokens[-1] in t for t in declared_tokens)
     return {
         "url_ok": True,
         "title": title,
