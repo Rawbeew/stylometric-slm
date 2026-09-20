@@ -1,0 +1,96 @@
+{
+  "per_author_per_lang": {
+    "en/dickens": {
+      "correct": 77,
+      "total": 84,
+      "accuracy": 0.9166666666666666
+    },
+    "en/joyce": {
+      "correct": 7,
+      "total": 19,
+      "accuracy": 0.3684210526315789
+    },
+    "en/melville": {
+      "correct": 24,
+      "total": 31,
+      "accuracy": 0.7741935483870968
+    },
+    "en/twain": {
+      "correct": 28,
+      "total": 37,
+      "accuracy": 0.7567567567567568
+    },
+    "en/woolf": {
+      "correct": 6,
+      "total": 22,
+      "accuracy": 0.2727272727272727
+    },
+    "es/cervantes": {
+      "correct": 68,
+      "total": 68,
+      "accuracy": 1.0
+    },
+    "es/galdos": {
+      "correct": 5,
+      "total": 11,
+      "accuracy": 0.45454545454545453
+    },
+    "es/pardo_bazan": {
+      "correct": 7,
+      "total": 12,
+      "accuracy": 0.5833333333333334
+    },
+    "fr/flaubert": {
+      "correct": 5,
+      "total": 20,
+      "accuracy": 0.25
+    },
+    "fr/hugo": {
+      "correct": 88,
+      "total": 113,
+      "accuracy": 0.7787610619469026
+    },
+    "fr/maupassant": {
+      "correct": 70,
+      "total": 114,
+      "accuracy": 0.6140350877192983
+    },
+    "fr/proust": {
+      "correct": 39,
+      "total": 44,
+      "accuracy": 0.8863636363636364
+    },
+    "fr/zola": {
+      "correct": 7,
+      "total": 23,
+      "accuracy": 0.30434782608695654
+    },
+    "it/manzoni": {
+      "correct": 3,
+      "total": 7,
+      "accuracy": 0.42857142857142855
+    }
+  },
+  "overall": {
+    "en": {
+      "correct": 142,
+      "total": 193,
+      "accuracy": 0.7357512953367875
+    },
+    "es": {
+      "correct": 80,
+      "total": 91,
+      "accuracy": 0.8791208791208791
+    },
+    "fr": {
+      "correct": 209,
+      "total": 314,
+      "accuracy": 0.6656050955414012
+    },
+    "it": {
+      "correct": 3,
+      "total": 7,
+      "accuracy": 0.42857142857142855
+    }
+  }
+}
