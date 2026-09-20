@@ -21,3 +21,4 @@
 - `2026-09-20_1500_tpu_setup.md` — TPU creation, libtpu missing, torch_xla version dance
 - `2026-09-20_1600_tpu_training.md` — Real training attempts, OOM diagnostics, final state
 - `2026-09-20_1700_decision_and_next.md` — Path forward, validation strategy
+- `2026-09-20_1730_pivot_to_cpu_vm.md` — User decision ($5 budget, more RAM), n2-highmem-8 deploy

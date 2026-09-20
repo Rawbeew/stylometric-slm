@@ -60,48 +60,34 @@ def extract_verified_block(text: str) -> str:
 
 
 def extract_signals(text: str) -> dict:
-    """Pull out verifiable factual signals from a chunk of terminal-like text."""
+    """Pull out verifiable factual signals from a chunk of terminal-like text.
+
+    Conservative: only count what a fresh execution produces, not paraphrased text.
+    """
     sig = {}
-    # HTTP status codes (any form: "HTTP 200", "HTTP/1.1 200 OK", "%{http_code}=200")
-    codes = re.findall(r"\bHTTP/?[\d.]*\s+(\d{3})\b", text)
-    # Also accept curl -w writing "HTTP/2 200" or "200 OK"
-    more = re.findall(r"^\s*\d{3}\s", text, re.MULTILINE)
-    codes += more
+    # HTTP status codes (only from `curl -w` or `curl -sI` output)
+    # Match "HTTP 200", "HTTP/1.1 200", "HTTP/2 200" — but NOT 4-digit numbers in
+    # line counts like "    2382 train.jsonl" (those have leading whitespace + spaces).
+    codes = []
+    for line in text.splitlines():
+        # An HTTP status appears right after "HTTP" or at start of header line.
+        m = re.match(r"^\s*HTTP/?[\d.]*\s+(\d{3})\b", line)
+        if m:
+            codes.append(m.group(1))
     if codes:
         sig["http_codes"] = sorted(set(codes))
-    # Exit codes (when shown explicitly by shell wrappers)
-    exits = re.findall(r"exit (?:code )?(\d+)", text)
+    # File sizes from `ls -la` (6+ digit numbers; millisecond-precision rule out)
+    lsizes = re.findall(r"\b(\d{5,10})\b\s+\S+\s+\d+\s+\d+\s+\S+\s+\S+\s+\d+\s+\S+", text)
+    if lsizes:
+        sig["file_size_bytes"] = sorted(set(lsizes))
+    # bytes=<N> from curl -w (explicitly tagged)
+    sizes = re.findall(r"bytes=(\d{2,})", text)
+    if sizes:
+        sig["curl_bytes_total"] = sum(int(s) for s in sizes)
+    # exit codes from explicit '[exit N]' or 'exit N'
+    exits = re.findall(r"exit\s+(?:code\s+)?(\d+)", text)
     if exits:
         sig["exit_codes"] = sorted(set(exits))
-    # bytes=<N> from curl -w
-    sizes = re.findall(r"bytes=(\d+)", text)
-    if sizes:
-        sig["bytes_total"] = sum(int(s) for s in sizes)
-    # file lines: <word> <num>
-    lines = re.findall(r"\bwc -l\b.*?(?:\d+)", text)
-    # file sizes from `ls -la`
-    lsizes = re.findall(r"(\d{6,})\s+\w+\s+\d+\s+\d+\s+\w+\s+\w+\s+\d+\s+\S+", text)
-    if lsizes:
-        sig["file_sizes_seen"] = sorted(set(lsizes))
-    # HF token length
-    hf_len = re.findall(r"HF_TOKEN length:\s*(\d+)", text)
-    if hf_len:
-        sig["hf_token_length"] = sorted(set(hf_len))
-    # Number of training rows
-    train_rows = re.findall(r"train=(\d+)", text)
-    if train_rows:
-        sig["train_rows"] = sorted(set(train_rows))
-    eval_rows = re.findall(r"eval=(\d+)", text)
-    if eval_rows:
-        sig["eval_rows"] = sorted(set(eval_rows))
-    # model parameter count (e.g. "[model] params: 582.4M")
-    params = re.findall(r"params:\s*([\d.]+M)", text)
-    if params:
-        sig["params_seen"] = sorted(set(params))
-    # TFLOPs effective
-    tflops = re.findall(r"([\d.]+)\s+GFLOPS\s+effective", text)
-    if tflops:
-        sig["tflops_seen"] = sorted(set(tflops))
     return sig
 
 

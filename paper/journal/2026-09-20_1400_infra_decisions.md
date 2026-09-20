@@ -75,7 +75,7 @@ GET /data/train.jsonl via tunnel -> 200 bytes=13790244
 
 ## GitHub repo
 - URL: `https://github.com/Rawbeew/stylometric-slm`
-- Branch: default `main`
+- Branch: default `master` (not `main` — local git config, NOT main as initially planned)
 - Visibility: flipped to **public** so TPU can `git clone` without auth
 - Visible to others: yes (SOP, paper docs, training scripts all visible)
 
