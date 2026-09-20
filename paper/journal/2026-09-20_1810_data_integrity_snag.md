@@ -112,18 +112,59 @@ dead
 ```
 
 ## Resolution plan
-1. **Identify correct Gutenberg URLs** for the 7 affected authors (using the Project Gutenberg search API or manual lookup)
-2. **Update `pull_gutenberg.py`** with the correct URLs
-3. **Re-pull** all author directories — overwrites existing bad data
-4. **Re-audit** to confirm 100% clean
-5. **Re-split** train/eval (deterministic seed 42)
-6. **Restart VM, re-train** with the corrected corpus
+1. **Identify correct Gutenberg URLs** for the 7 affected authors (using the Project Gutenberg search API or manual lookup) ✅ DONE
+2. **Update `pull_gutenberg.py`** with the correct URLs ✅ DONE
+3. **Re-pull** all author directories — overwrites existing bad data ✅ DONE
+4. **Re-audit** to confirm 100% clean ✅ DONE — **0 contaminated of 3592**
+5. **Re-split** train/eval (deterministic seed 42) ✅ DONE
+6. **Restart VM, re-train** with the corrected corpus ✅ LAUNCHED
 
-This will take longer than simply patching the contaminated rows because we want a clean re-pull — but it's the only way to be sure no other silent contamination snuck in.
+This took longer than simply patching the contaminated rows because we wanted a clean re-pull — but it's the only way to be sure no other silent contamination snuck in.
+
+### URL replacements applied
+
+| Directory | Old (wrong) URL | New (verified) URL | Notes |
+|---|---|---|---|
+| en/woolf | pg57496 (Mary Johnston, EN) | pg1245 Night and Day + pg5670 Jacob's Room | Both verified Virginia Woolf |
+| fr/zola | pg8609 (404) + pg5320 (E.P. Roe EN) | pg6497 L'Assommoir FR + pg5711 Germinal FR | Both French original |
+| fr/flaubert | pg2413 + pg26839 (404) | pg2413 only (Madame Bovary FR) | Salammbô FR not in PG; dropped |
+| es/galdos | pg56462 (A.C. Gibson EN) | pg17013 Fortunata y Jacinta + pg17340 Marianela | Both Spanish |
+| es/pardo_bazan | pg49990 (Hill EN) | pg17491 La Tribuna + pg68452 La piedra angular | Both Pardo Bazán, Spanish |
+| it/manzoni | pg4555 (Symonds EN, Shelley bio!) | pg45334 I promessi sposi | Italian |
+
+### Bugs found and fixed during re-pull
+
+1. **`strip_gutenberg_boilerplate` was clipping the wrong side of `*** START OF`**
+   - Old code kept chars AROUND the marker, throwing away the entire book body
+   - Old: `text = text[keep_pre:after+1]` → 863 chars of pre-marker only
+   - Fixed: `text = text[nl + 1:]` → full body from after marker onwards
+2. **CRLF line endings not handled**
+   - PG sometimes returns `\r\n`; `text.find("\n")` missed the LF
+   - Fixed: explicit `text.replace("\r\n", "\n").replace("\r", "\n")` first
+
+### Audit output (re-run 2026-09-20 18:30 UTC)
+```
+Total passages CLEAN: 3592
+Total passages CONTAMINATED: 0
+Total: 3592
+```
+
+Splits regenerated: **2875 train + 717 eval** (vs old 2382/605 because more data per author).
+
+### Re-train status
+
+- **Started**: PID 1339 on VM `stylometric-trainer` (n2-highmem-8, 64GB)
+- **Config**: 5 epochs, batch=4, grad_accum=4, seq=512, 1500 train rows (downsampled for budget)
+- **Total steps**: 1500/(4×4) = 93 steps/epoch × 5 = **465 steps**
+- **Step time observed**: ~35s/step (first 2 steps; 43 then 35 — speeding up as expected)
+- **ETA**: ~4.5h
+- **Cost**: 4.5 × $0.43 = **~$1.93**
+- **Log**: `/home/alaga/train_v4.log`
 
 ## Cost impact
 - Training killed at step 9/465 → 9 × 28s = ~5 min of waste (~$0.04)
 - VM stopped: 1 hour of $0.43 saved immediately, more as we re-pull
 - TPU cost on prior failed attempt: ~$0.44
 - Total spent so far: ~$1.30 of $5 budget
-- Future re-train estimate: ~$1.57 + small VM idle cost during re-pull (~30 min × $0.43 = ~$0.22) = **~$2.10 total expected**
+- Future re-train estimate: ~$1.93
+- **Total expected: ~$3.23** of $5 budget (leaves ~$1.77 buffer)
