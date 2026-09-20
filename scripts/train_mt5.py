@@ -140,6 +140,8 @@ def main():
     ap.add_argument("--resume-from", default=None,
                     help="Path to checkpoint to resume from (for preemption recovery)")
     ap.add_argument("--output-dir", default=None)
+    ap.add_argument("--gradient-checkpointing", action="store_true",
+                    help="Trade compute for memory by recomputing activations")
     args = ap.parse_args()
 
     # Reproducibility
@@ -234,6 +236,7 @@ def main():
         eval_strategy="no" if args.dry_run else "epoch",
         bf16=bf16,
         fp16=False,  # bf16 is sufficient; fp16 causes loss scaling issues on TPU
+        gradient_checkpointing=args.gradient_checkpointing,
         push_to_hub=bool(args.push_to),
         hub_model_id=args.push_to,
         hub_token=token,
