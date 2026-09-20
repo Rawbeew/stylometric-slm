@@ -23,18 +23,45 @@ SSH = r"C:\Windows\System32\OpenSSH\ssh.exe"
 KEY = r"C:\tmp\gce_key"
 HOSTS = r"C:\tmp\vm_hosts"
 HOST = "alaga@136.118.30.79"
-LOG = "/home/alaga/train_v3.log"
+LOG = "/home/alaga/train_v4.log"
 
 PROGRESS = re.compile(r"(\d+)/(\d+)\s+\[([^\]]+)\]")
 
+import shutil
+
 def ssh_run(cmd: str, timeout: int = 30) -> str:
-    full = [SSH, "-i", KEY, "-o", "StrictHostKeyChecking=no",
-            "-o", f"UserKnownHostsFile={HOSTS}", HOST, cmd]
+    # Try direct SSH first (faster), fall back to gcloud
+    ssh = shutil.which("ssh") or "C:/Windows/System32/OpenSSH/ssh.exe"
+    ssh_key = r"C:\tmp\gce_key"
+    known_hosts = r"C:\tmp\vm_hosts"
+
+    # Try direct
     try:
-        r = subprocess.run(full, capture_output=True, text=True, timeout=timeout)
+        out = subprocess.run(
+            [ssh, "-i", ssh_key, "-o", "StrictHostKeyChecking=no",
+             "-o", f"UserKnownHostsFile={known_hosts}",
+             HOST, cmd],
+            capture_output=True, text=True, timeout=timeout,
+        )
+        if out.returncode == 0:
+            return (out.stdout or "") + (out.stderr or "")
+    except Exception:
+        pass
+    # Fallback: gcloud
+    gcloud = r"C:\tmp\gcloud_wrapper.cmd"
+    try:
+        r = subprocess.run(
+            [gcloud, "compute", "ssh", "stylometric-trainer",
+             "--zone=us-west1-c", "--project=orca-503514",
+             f"--command={cmd}"],
+            capture_output=True, text=True, timeout=timeout,
+        )
         return (r.stdout or "") + (r.stderr or "")
     except Exception as e:
         return f"[error: {e}]"
+
+
+import shutil
 
 def step_and_eta(log_tail: str):
     matches = PROGRESS.findall(log_tail)
