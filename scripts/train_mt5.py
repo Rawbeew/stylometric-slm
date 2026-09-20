@@ -27,6 +27,7 @@ import argparse
 import json
 import os
 import random
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -121,6 +122,72 @@ def load_data(args):
     return train_rows, eval_rows
 
 
+# Author surname patterns (used to detect training data leakage)
+AUTHOR_SURNAMES = [
+    "dickens", "twain", "melville", "woolf", "joyce",  # en
+    "hugo", "maupassant", "flaubert", "proust", "zola",  # fr
+    "cervantes", "galdos", "pardo bazan",  # es
+    "manzoni",
+]
+
+
+def check_leakage(rows, kind: str):
+    """Abort if any row's text contains the author surname as a whole token.
+
+    Catches front-matter leakage (the bug from 2026-09-20 where PG metadata
+    like "DAVID COPPERFIELD By Charles Dickens" leaked into train rows and
+    caused gradient explosion).
+
+    Important: matches whole tokens, not substrings, to avoid false positives:
+    - "twain" the surname vs "twain" meaning "two" (old English)
+    - "zola" the surname vs "ruzzolarono" / "spenzolava" (Italian verbs)
+    - "hugo" the surname vs "hugoton" / similar substrings
+    """
+    import unicodedata
+
+    def norm(text: str) -> str:
+        s = text.lower()
+        s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+        return re.sub(r"\s+", " ", s)
+
+    def has_surname_token(text_norm: str, surname: str) -> bool:
+        """Check if surname appears as a whole word in text."""
+        # \b doesn't work with our norm (which stripped punctuation). Use lookaround.
+        # Pattern: (^|[^a-z])surname([^a-z]|$)
+        s = surname.lower().replace(" ", r"\s+")
+        pat = rf"(^|[^a-z]){s}([^a-z]|$)"
+        return bool(re.search(pat, text_norm))
+
+    contaminated = []
+    for i, r in enumerate(rows):
+        text = r["text"][:2000]  # expanded window
+        text_n = norm(text)
+        author_n = norm(r["author"].replace("_", " "))
+
+        # Try each surname (full first name + last name from author key too)
+        candidates = []
+        for sn in AUTHOR_SURNAMES:
+            candidates.append(sn)
+        # Also check full author label as a candidate (e.g. "pardo bazan")
+        if author_n and author_n not in candidates:
+            candidates.append(author_n)
+
+        for sn in candidates:
+            if has_surname_token(text_n, sn):
+                contaminated.append((i, r.get("passage_id", "?"), sn, r["author"]))
+                break
+
+    if contaminated:
+        print(f"\n[!] LEAKAGE DETECTED in {kind} ({len(contaminated)} rows):")
+        for i, pid, sn, an in contaminated[:10]:
+            print(f"    row {i} (passage_id={pid}): text contains '{sn}' (label='{an}')")
+        if len(contaminated) > 10:
+            print(f"    ... and {len(contaminated) - 10} more")
+        print(f"\n    Fix: re-run scripts/clean_passages.py on corpus/ first.")
+        sys.exit(1)
+    print(f"[leak] {kind} {len(rows)} rows: 0 contamination")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base-model", default="google/mt5-base")
@@ -164,6 +231,9 @@ def main():
     # ---- Data ----
     train_rows, eval_rows = load_data(args)
     print(f"[data] train={len(train_rows)}, eval={len(eval_rows)}")
+    # Defensive: abort if any row leaks the author name into text
+    check_leakage(train_rows, "train")
+    check_leakage(eval_rows, "eval")
 
     if args.dry_run:
         args.epochs = 1
@@ -234,9 +304,15 @@ def main():
         save_steps=5 if args.dry_run else 500,
         save_total_limit=2,
         eval_strategy="no" if args.dry_run else "epoch",
+        # Defensive: clip gradient norm to prevent explosion if a bad batch hits.
+        # This is the default in Trainer but making it explicit so future runs
+        # can reference it. Bug discovered 2026-09-20: train loss reached 156.8
+        # with grad_norm=4369 because clipping was effectively bypassed via a
+        # bug in a custom optimizer wrapper; setting it explicitly here.
         bf16=bf16,
         fp16=False,  # bf16 is sufficient; fp16 causes loss scaling issues on TPU
         gradient_checkpointing=args.gradient_checkpointing,
+        max_grad_norm=1.0,  # explicit; default is 1.0 but make it visible
         push_to_hub=bool(args.push_to),
         hub_model_id=args.push_to,
         hub_token=token,
