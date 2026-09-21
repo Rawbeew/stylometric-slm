@@ -1,0 +1,31 @@
+{
+  "issue": "mT5 outputs <extra_id_0> sentinel instead of author names",
+  "discovered": "2026-09-21 09:58 UTC",
+  "model": "Chaiir/stylometric-mt5-v1",
+  "base_model": "google/mt5-base",
+  "samples": [
+    {"expected": "dickens",  "text_snippet": "It was the best of times...",      "prediction": "<extra_id_0> the"},
+    {"expected": "hugo",     "text_snippet": "Il vivait miserable...",            "prediction": "<extra_id_0>"},
+    {"expected": "zola",     "text_snippet": "Gervaise attendait...",             "prediction": "<extra_id_0> class"},
+    {"expected": "manzoni",  "text_snippet": "Quel giorno era stabilito...",      "prediction": "<extra_id_0>"},
+    {"expected": "woolf",    "text_snippet": "Whether it was the past...",        "prediction": "<extra_id_0>"},
+    {"expected": "dickens",  "text_snippet": "Whether I shall turn out...",       "prediction": "<extra_id_0>"},
+    {"expected": "twain",    "text_snippet": "We saw the dead man.",              "prediction": "<extra_id_0>"}
+  ],
+  "root_cause": "mT5 pretrained with span corruption objective; decoder strongly prefers <extra_id_0> as first token at inference",
+  "training_metrics": {
+    "epochs": 5,
+    "final_train_loss": 92.83,
+    "final_eval_loss": 10.61,
+    "eval_loss_per_epoch": [28.75, 20.98, 14.97, 11.69, 10.61],
+    "random_baseline_loss": 2.64,
+    "per_author_accuracy": "0% for all 14 authors"
+  },
+  "data_state": "Clean: 3515 passages (2810 train + 705 eval), 0 contamination, all 14 authors verified",
+  "next_steps": [
+    "Retrain with t5-base or mBART (no span corruption pretrain)",
+    "Add per-author eval during training (compute_metrics)",
+    "Use longer training (10-20 epochs) and lower LR (1e-5)",
+    "Sample generations at every epoch to catch sentinel drift early"
+  ]
+}
