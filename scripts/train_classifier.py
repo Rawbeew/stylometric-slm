@@ -198,19 +198,24 @@ def main():
         return
 
     print(f"[save] final model to {out_dir}/final")
-    # Trainer's save_model doesn't accept safe_serialization kwarg in 4.46.0
-    # and the tied-weight issue requires us to use pickle. Call save_pretrained
-    # directly with safe_serialization=False to write a .bin instead of .safetensors.
-    if hasattr(model, "save_pretrained"):
-        model.save_pretrained(out_dir + "/final", safe_serialization=False)
-    else:
-        trainer.save_model(out_dir + "/final")
-    tokenizer.save_pretrained(out_dir + "/final")
+    # Trainer's save_model calls safetensors.save_file which refuses tied weights.
+    # Our Classifier is a plain nn.Module (not PreTrainedModel), so it doesn't
+    # have save_pretrained. We save state_dict directly via torch.save (pickle),
+    # which handles aliased tensors fine.
+    final_dir = Path(out_dir) / "final"
+    final_dir.mkdir(parents=True, exist_ok=True)
 
-    # Save author vocabulary
-    (Path(out_dir) / "final" / "author_vocab.json").write_text(json.dumps({
-        "authors": authors, "author2id": author2id,
-    }, indent=2, ensure_ascii=False))
+    # Save encoder (which has the tied-weight issue) using pickle, not safetensors
+    model.encoder.save_pretrained(str(final_dir), safe_serialization=False)
+    # Save classification head + author vocab
+    torch.save({
+        "state_dict": model.state_dict(),
+        "author2id": author2id,
+        "id2author": id2author,
+        "hidden_size": hidden_size,
+        "n_classes": n_classes,
+    }, final_dir / "classifier_head.pt")
+    tokenizer.save_pretrained(str(final_dir))
 
     # ---- Per-author per-language accuracy ----
     print("[eval] computing per-author-per-language accuracy...")
