@@ -1,0 +1,118 @@
+{
+  "model": "stylometric-classifier-v8",
+  "architecture": "MT5EncoderModel (encoder only) + mean-pool + linear head, 277M params, 14 classes",
+  "base_model": "google/mt5-base",
+  "training": {
+    "data": "2810 train, 705 eval passages, 0 contamination, 14 authors",
+    "epochs": 3,
+    "batch_size": 16,
+    "lr": 0.0002,
+    "max_input_len": 256,
+    "total_steps": 528,
+    "runtime_sec": 4484,
+    "final_train_loss": 0.9258,
+    "final_eval_loss": 0.3379,
+    "final_eval_accuracy": 0.9121
+  },
+  "per_epoch_metrics": [
+    {
+      "epoch": 1,
+      "eval_loss": 0.83,
+      "eval_accuracy": 0.773
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 0.44,
+      "eval_accuracy": 0.867
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 0.34,
+      "eval_accuracy": 0.912
+    }
+  ],
+  "per_author_per_lang_accuracy": {
+    "en/dickens": {
+      "correct": 50,
+      "total": 50,
+      "accuracy": 1.0
+    },
+    "en/joyce": {
+      "correct": 13,
+      "total": 19,
+      "accuracy": 0.684
+    },
+    "en/melville": {
+      "correct": 16,
+      "total": 30,
+      "accuracy": 0.533
+    },
+    "en/twain": {
+      "correct": 29,
+      "total": 36,
+      "accuracy": 0.806
+    },
+    "en/woolf": {
+      "correct": 21,
+      "total": 29,
+      "accuracy": 0.724
+    },
+    "es/cervantes": {
+      "correct": 50,
+      "total": 50,
+      "accuracy": 1.0
+    },
+    "es/galdos": {
+      "correct": 50,
+      "total": 50,
+      "accuracy": 1.0
+    },
+    "es/pardo_bazan": {
+      "correct": 6,
+      "total": 8,
+      "accuracy": 0.75
+    },
+    "fr/flaubert": {
+      "correct": 1,
+      "total": 19,
+      "accuracy": 0.053
+    },
+    "fr/hugo": {
+      "correct": 48,
+      "total": 50,
+      "accuracy": 0.96
+    },
+    "fr/maupassant": {
+      "correct": 49,
+      "total": 50,
+      "accuracy": 0.98
+    },
+    "fr/proust": {
+      "correct": 43,
+      "total": 43,
+      "accuracy": 1.0
+    },
+    "fr/zola": {
+      "correct": 36,
+      "total": 36,
+      "accuracy": 1.0
+    },
+    "it/manzoni": {
+      "correct": 41,
+      "total": 41,
+      "accuracy": 1.0
+    }
+  },
+  "overall": {
+    "correct": 453,
+    "total": 511,
+    "accuracy": 0.886
+  },
+  "huggingface_repo": "Chaiir/stylometric-cls-v1",
+  "notes": [
+    "flaubert fails (5%) - likely confused with zola (also French Naturalist)",
+    "12/14 authors exceed 70% accuracy",
+    "6/14 authors perfect (100%)",
+    "evaluation sampled 50 passages per author from eval set"
+  ]
+}

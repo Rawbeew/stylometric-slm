@@ -274,10 +274,24 @@ def main():
 
     if args.push_to:
         try:
-            trainer.push_to_hub(commit_message="mT5 encoder + linear head for authorship attribution")
+            # Push artifacts directly to HF using the local save directory.
+            # trainer.push_to_hub calls model.save_pretrained which defaults
+            # to safetensors — refuses tied weights. We upload our already-pickled
+            # local files instead.
+            from huggingface_hub import HfApi, create_repo, upload_folder
+            token = os.environ.get("HF_TOKEN", "")
+            api = HfApi(token=token)
+            create_repo(args.push_to, token=token, exist_ok=True, repo_type="model")
+            api.upload_folder(
+                folder_path=str(final_dir),
+                repo_id=args.push_to,
+                repo_type="model",
+                commit_message="mT5 encoder + linear head for authorship attribution (pickle save to bypass tied-weight safetensors error)",
+            )
             print(f"[push] OK: https://huggingface.co/{args.push_to}")
         except Exception as e:
             print(f"[push] FAILED: {e}", file=sys.stderr)
+            print(f"[push] local copy is at {final_dir} — upload manually via huggingface-cli", file=sys.stderr)
 
 
 if __name__ == "__main__":
