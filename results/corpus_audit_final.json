@@ -1,0 +1,261 @@
+{
+  "en/dickens": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "A Tale of Two Cities",
+        "author": "Charles Dickens",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/98/pg98.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "Great Expectations",
+        "author": "Charles Dickens",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/1400/pg1400.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "David Copperfield",
+        "author": "Charles Dickens",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/766/pg766.txt"
+      }
+    ],
+    "on_disk_files": 352
+  },
+  "en/twain": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "The Adventures of Tom Sawyer, Complete",
+        "author": "Mark Twain",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/74/pg74.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "Adventures of Huckleberry Finn",
+        "author": "Mark Twain",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/76/pg76.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "The Innocents Abroad",
+        "author": "Mark Twain",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/3176/pg3176.txt"
+      }
+    ],
+    "on_disk_files": 189
+  },
+  "en/woolf": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Night and Day",
+        "author": "Virginia Woolf",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/1245/pg1245.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "Jacob's Room",
+        "author": "Virginia Woolf",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/5670/pg5670.txt"
+      }
+    ],
+    "on_disk_files": 161
+  },
+  "en/joyce": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "A Portrait of the Artist as a Young Man",
+        "author": "James Joyce",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/4217/pg4217.txt"
+      }
+    ],
+    "on_disk_files": 82
+  },
+  "en/melville": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Moby Dick; Or, The Whale",
+        "author": "Herman Melville",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/2701/pg2701.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "White Jacket; Or, The World on a Man-of-War",
+        "author": "Herman Melville",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/10712/pg10712.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "The Piazza Tales",
+        "author": "Herman Melville",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/15859/pg15859.txt"
+      }
+    ],
+    "on_disk_files": 207
+  },
+  "fr/hugo": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Les Misérables",
+        "author": "Victor Hugo",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/135/pg135.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "Notre-Dame de Paris",
+        "author": "Victor Hugo",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/2610/pg2610.txt"
+      }
+    ],
+    "on_disk_files": 556
+  },
+  "fr/zola": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "L'Assommoir",
+        "author": "Émile Zola",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/6497/pg6497.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "Germinal",
+        "author": "Émile Zola",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/5711/pg5711.txt"
+      }
+    ],
+    "on_disk_files": 162
+  },
+  "fr/flaubert": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Madame Bovary",
+        "author": "Gustave Flaubert",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/2413/pg2413.txt"
+      }
+    ],
+    "on_disk_files": 113
+  },
+  "fr/maupassant": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Complete Original Short Stories of Guy De Maupassant",
+        "author": "Guy de Maupassant",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/3090/pg3090.txt"
+      }
+    ],
+    "on_disk_files": 484
+  },
+  "fr/proust": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Du côté de chez Swann",
+        "author": "Marcel Proust",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/2650/pg2650.txt"
+      }
+    ],
+    "on_disk_files": 162
+  },
+  "es/cervantes": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Don Quijote",
+        "author": "Miguel de Cervantes Saavedra",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/2000/pg2000.txt"
+      }
+    ],
+    "on_disk_files": 381
+  },
+  "es/galdos": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "Fortunata y Jacinta: dos historias de casadas",
+        "author": "Benito Pérez Galdós",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/17013/pg17013.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "Marianela",
+        "author": "Benito Pérez Galdós",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/17340/pg17340.txt"
+      }
+    ],
+    "on_disk_files": 390
+  },
+  "es/pardo_bazan": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "La Tribuna",
+        "author": "condesa de Emilia Pardo Bazán",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/17491/pg17491.txt"
+      },
+      {
+        "url_ok": true,
+        "title": "La piedra angular: novela",
+        "author": "condesa de Emilia Pardo Bazán",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/68452/pg68452.txt"
+      }
+    ],
+    "on_disk_files": 61
+  },
+  "it/manzoni": {
+    "verdict": "OK",
+    "url_results": [
+      {
+        "url_ok": true,
+        "title": "I promessi sposi.",
+        "author": "Alessandro Manzoni",
+        "matches_expected_author": true,
+        "url": "https://www.gutenberg.org/cache/epub/45334/pg45334.txt"
+      }
+    ],
+    "on_disk_files": 215
+  }
+}

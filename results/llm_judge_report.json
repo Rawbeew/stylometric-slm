@@ -1,0 +1,36 @@
+[
+  {
+    "file": "2026-09-20_1400_infra_decisions.md",
+    "verdict": "CLEAN",
+    "findings": [],
+    "actual_excerpt": "{\n    \"status\": \"ok\",\n    \"secrets\": [\n        \"HF_TOKEN\"\n    ],\n{\n    \"status\": \"ok\",\n    \"secrets\": [\n        \"HF_TOKEN\"\n    ],\nHF_TOKEN=[REDACTED-AT-COMMIT-TIME]\ntotal 41284\ndrwxr-xr-x 1 alaga 197121        0 Sep 19 03:48 .\ndrwxr-xr-x 1 alaga 197121        0 Sep 20 09:13 ..\n-rw-r--r-- 1 alaga 197121 21658987 Sep 20 12:40 dataset.jsonl\n-rw-r--r-- 1 alaga 197121  4130904 Sep 20 12:39 eval.jsonl\n-rw-r--r-- 1 alaga 197121 16477899 Sep 20 12:39 train.jsonl\nHTTP/1.1 200 OK\nDate: Mon, 21 Sep 2026 10:02:46 GMT\nContent-Type: text/html; charset=utf-8\n"
+  },
+  {
+    "file": "2026-09-20_1500_tpu_setup.md",
+    "verdict": "CLEAN",
+    "findings": [],
+    "actual_excerpt": "d3103ee Journal entry 6: v6 training results \u2014 model broken (outputs extra_id_0 sentinel)\n6ee5fd7 Autonomous completion monitor: poll training, finalize on completion\ncca6fd3 Journal entry 5 final: front-matter leak fully resolved, leak detector passed on clean splits\nbda2cb6 Fix front-matter leakage: drop contaminated passages, add leak detector guard in train_mt5\nba29896 Journal entry 4 update: data integrity snag resolved, 0/3592 contamination, retrain launched\ncommit d3103ee464d7937223834649cfad2d0c8dc522b2\nAuthor: Rabiu Raji <rabiu@local>\nDate:   Mon Sep 21 03:02:40 2026 -0700\n\n    Journa"
+  },
+  {
+    "file": "2026-09-20_1730_pivot_to_cpu_vm.md",
+    "verdict": "CLEAN",
+    "findings": [],
+    "actual_excerpt": "c:\\python314\\python.exe: can't open file 'C:\\\\c\\\\Program Files (x86)\\\\Google\\\\Cloud SDK\\\\google-cloud-sdk\\\\lib\\\\gcloud.py': [Errno 2] No such file or directory\nssh: connect to host 136.118.30.79 port 22: Connection timed out\nssh: Could not resolve hostname ...: Name or service not known\n"
+  },
+  {
+    "file": "2026-09-20_1810_data_integrity_snag.md",
+    "verdict": "CLEAN",
+    "findings": [],
+    "actual_excerpt": "================================================================================\nSTYLOMETRIC SLM \u2014 Corpus Audit Report (2026-09-20)\n================================================================================\n\n  OK en/dickens: verdict=OK, files=352\n      \u2713 A Tale of Two Cities\n        author: Charles Dickens\n      \u2713 Great Expectations\n        author: Charles Dickens\n      \u2713 David Copperfield\n        author: Charles Dickens\n\n  OK en/joyce: verdict=OK, files=82\n      \u2713 A Portrait of the Artist as a Young Man\n        author: James Joyce\n\n  OK en/melville: verdict=OK, files=207\n      \u2713 Moby Di"
+  },
+  {
+    "file": "2026-09-20_1945_front_matter_leak.md",
+    "skipped": "no Cross-check block",
+    "verdict": "SKIP"
+  },
+  {
+    "file": "2026-09-21_0958_v6_results.md",
+    "skipped": "no Cross-check block",
+    "verdict": "SKIP"
+  }
+]
