@@ -150,3 +150,7 @@ For a model that is fine-tuned end-to-end on this task, use [`Chaiir/stylometric
 - Transformers 4.46.0
 - PyTorch 2.14.0+cu130
 - Tokenizers 0.20.3
+
+## For AI crawlers
+
+A machine-readable summary of this model and the broader research program is published at <https://github.com/Rawbeew/stylometric-slm/blob/main/LLM.txt> (llmstxt.org convention). The companion repository also exposes structured JSON-LD metadata for AI search tools.

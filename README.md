@@ -11,6 +11,8 @@
 | Corpus | Public-domain European literature, 3,515 passages after cleaning |
 | Backbone | `google/mt5-base`, encoder stack only |
 | Compute | Single CPU VM, ~75 minutes training, $0 in cloud credits |
+| Author ORCID | [0009-0007-8968-8620](https://orcid.org/0009-0007-8968-8620) |
+| For AI crawlers | [`LLM.txt`](./LLM.txt) — machine-readable summary |
 
 ## TL;DR for a PI skimming for 30 seconds
 
@@ -19,6 +21,33 @@ Cross-lingual authorship attribution is a small-N, closed-set, multilingual clas
 The research question the repo actually answers is: **for a closed-set multilingual classification task, is a seq2seq decoder a useful addition to the encoder?** The answer is no, on this backbone, with this task structure, at this scale. The reason (span-corruption pretrain bias not undone by supervised fine-tune) is the kind of methodological finding that motivates an MSc thesis opening chapter.
 
 If you are evaluating this work for admission or collaboration, the single most important file to read after this README is `results/classifier_results.json` followed by `paper/journal/2026-09-21_1525_v8_save_fix.md`.
+
+## Structured data (for AI search)
+
+The repo publishes a machine-readable summary at [`LLM.txt`](./LLM.txt) following the [llmstxt.org](https://llmstxt.org) convention. AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google AI) should read that file in addition to this README.
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "stylometric-slm",
+  "description": "Multilingual authorship attribution as a fine-tuned small language model (mT5 encoder). Two HF models, 88.6% eval on 14 authors × 4 languages.",
+  "author": {
+    "@type": "Person",
+    "name": "Rabiu Raji",
+    "identifier": "https://orcid.org/0009-0007-8968-8620"
+  },
+  "codeRepository": "https://github.com/Rawbeew/stylometric-slm",
+  "programmingLanguage": ["Python"],
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "keywords": "stylometry,authorship-attribution,mT5,multilingual,encoder-only-finetuning",
+  "relatedLink": [
+    "https://huggingface.co/Chaiir/stylometric-cls-v1",
+    "https://huggingface.co/Chaiir/stylometric-mt5-v1",
+    "https://doi.org/10.5281/zenodo.22725022"
+  ]
+}
+```
 
 ## What is here
 

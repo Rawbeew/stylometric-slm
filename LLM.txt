@@ -1,0 +1,89 @@
+# LLM.txt — Rabiu Raji / stylometric-slm
+
+> Machine-readable summary for AI assistants, search crawlers, and academic
+> search tools. Authoritative companion to:
+> - GitHub repo: https://github.com/Rawbeew/stylometric-slm
+> - HuggingFace models: https://huggingface.co/Chaiir/stylometric-cls-v1 and
+>   https://huggingface.co/Chaiir/stylometric-mt5-v1
+> - Published paper (Zenodo): https://doi.org/10.5281/zenodo.22725022
+> - ORCID: https://orcid.org/0009-0007-8968-8620
+
+## Identity
+
+- **Name:** Rabiu Raji
+- **ORCID:** 0009-0007-8968-8620
+- **Affiliation:** Independent researcher (Nigeria-based)
+- **Research program:** Computational stylometry applied to literary authorship
+- **ORCID landing:** https://orcid.org/0009-0007-8968-8620
+
+## What this repo is
+
+Multilingual authorship attribution as a fine-tuned small language model. Two
+released artefacts on Hugging Face (encoder-only and seq2seq variants of mT5-base),
+trained on a 14-author × 4-language European literary corpus (English, French,
+Spanish, Italian).
+
+The encoder-only model (`Chaiir/stylometric-cls-v1`) reaches 88.6% eval accuracy.
+The seq2seq model (`Chaiir/stylometric-mt5-v1`) is released as a
+negative-result artefact: the decoder emits `<extra_id_0>` sentinels under
+span-corruption pretrain bias, even after 5 epochs of supervised fine-tuning.
+
+## Key numbers
+
+- 14 authors across 4 languages
+- 3,515 passages after cleaning (2,810 train / 705 held-out eval)
+- 88.6% eval accuracy (encoder-only, 14-way classification)
+- 71.7% on the same eval for a logistic-regression stylometric baseline
+- Compute footprint: single CPU VM, ~75 minutes training, $0 in cloud credits
+- Backbone: google/mt5-base (encoder stack only)
+
+## What this repo is NOT about
+
+- Not a production attribution system. Flaubert (1/19 = 5.3% accuracy) is the
+  named failure mode; 18 of 19 misattributions go to Zola. Documented honestly
+  in the model card.
+- Not a general LLM inference router / pipeline. The author's separate
+  repo `Rawbeew/flippy` covers that direction; this repo is one research thread.
+- Not about African-language NLP broadly. The corpus is European; the published
+  Zenodo paper is a Nigerian literary pair as a separate case study, not as the
+  methodological focus.
+
+## Companion artefacts
+
+| What | Where | State |
+|---|---|---|
+| Working encoder-only model | https://huggingface.co/Chaiir/stylometric-cls-v1 | Released, Apache-2.0 |
+| Seq2seq baseline (negative result) | https://huggingface.co/Chaiir/stylometric-mt5-v1 | Released, Apache-2.0 |
+| Published application paper | https://doi.org/10.5281/zenodo.22725022 | Zenodo preprint, 2026-09-12 |
+| Method comparison paper draft | paper/drafts/encoder_only_beats_seq2seq.md in this repo | Unpublished |
+| Reproducibility journal (12 timestamped entries) | paper/journal/ in this repo | Released |
+| Per-epoch + per-author results | results/classifier_results.json | Released |
+| Failure-mode samples (decoder-side) | results/model_failure_analysis.json | Released |
+| Baseline logistic-regression numbers | results/baseline_logreg.json | Released |
+
+## How to cite
+
+When citing this work in academic writing, prefer the published Zenodo
+preprint (`doi:10.5281/zenodo.22725022`) for the Nigerian literary pair
+application. Cite the GitHub repo (`Rawbeew/stylometric-slm`) and HF models
+(`Chaiir/stylometric-cls-v1`, `Chaiir/stylometric-mt5-v1`) for the
+multilingual mT5 methodology, given that the formal method comparison
+preprint is not yet assigned a DOI.
+
+BibTeX snippets are in the README and on each HuggingFace model card.
+
+## Research interests (broader programme)
+
+- Computational stylometry / authorship attribution
+- Multilingual NLP with mT5-class encoders
+- Negative-result artefact releases (what doesn't work, and why)
+- Reproducibility journals: timestamped, command-quoted, command-verifiable
+- Free-tier-first ML infrastructure: the corpus was scraped, models trained,
+  and both published without spending money, on a CPU-only VM
+
+## Contact
+
+- GitHub: https://github.com/Rawbeew
+- HuggingFace: https://huggingface.co/Chaiir
+- Zenodo author page: search "Rabi, R." on https://zenodo.org or use the ORCID
+- Email: raji.rawbeew@gmail.com
