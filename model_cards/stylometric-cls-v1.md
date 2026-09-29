@@ -4,16 +4,21 @@ license: apache-2.0
 base_model: google/mt5-base
 pipeline_tag: text-classification
 tags:
-- mte5
 - mt5
+- transformers
 - text-classification
 - stylometry
 - authorship-attribution
-- forensic-stylistics
 - multilingual
-- cross-lingual
-- european-literature
+- en
+- fr
+- es
+- it
+- encoder-only
+- text-embedding
+- literary-analysis
 - generated_from_trainer
+- eval-results
 model-index:
 - name: stylometric-cls-v1
   results:
@@ -22,17 +27,17 @@ model-index:
       name: Authorship Attribution (14-way, cross-lingual)
     dataset:
       type: stylometric-corpus-v1
-      name: European literary corpus, 14 authors × 4 languages (en/fr/es/it)
+      name: European literary corpus, 14 authors x 4 languages (en/fr/es/it)
     metrics:
     - type: accuracy
       value: 0.886
-      name: Held-out accuracy (per-author sampled: 511 passages, 14-way, 50 per author)
-    - type: accuracy_full
+      name: "Held-out accuracy: per-author sampled (511 passages, 50 per author)"
+    - type: accuracy
       value: 0.912
-      name: Held-out accuracy (full eval: 705 passages, 14-way)
+      name: "Held-out accuracy: full eval (705 passages)"
     - type: baseline_logreg
       value: 0.717
-      name: Logistic regression stylometric baseline (matched eval: 434/605)
+      name: "Logistic regression stylometric baseline (matched eval: 434/605)"
 ---
 
 # stylometric-cls-v1

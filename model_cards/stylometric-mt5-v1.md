@@ -4,16 +4,20 @@ license: apache-2.0
 base_model: google/mt5-base
 pipeline_tag: text-generation
 tags:
-- mte5
 - mt5
+- transformers
 - text-generation
 - seq2seq
 - stylometry
 - authorship-attribution
-- forensic-stylistics
 - multilingual
+- en
+- fr
+- es
+- it
 - span-corruption-bias
 - negative-result
+- eval-results
 model-index:
 - name: stylometric-mt5-v1
   results:
