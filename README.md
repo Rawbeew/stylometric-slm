@@ -18,9 +18,9 @@
 
 Cross-lingual authorship attribution is a small-N, closed-set, multilingual classification problem. This repo ships the right architecture (encoder-only mT5 with linear head), the corpus, the eval, and a 12-entry reproducibility journal that records every command and output verbatim. The encoder-only model outperforms the seq2seq baseline by 20+ points absolute, and the failure mode of the seq2seq model (decoder bias toward emitting the `<extra_id_0>` span-corruption sentinel) is documented concretely with sample outputs and a per-epoch loss curve.
 
-The research question the repo actually answers is: **for a closed-set multilingual classification task, is a seq2seq decoder a useful addition to the encoder?** The answer is no, on this backbone, with this task structure, at this scale. The reason (span-corruption pretrain bias not undone by supervised fine-tune) is the kind of methodological finding that motivates an MSc thesis opening chapter.
+The research question the repo actually answers is: **for a closed-set multilingual classification task, is a seq2seq decoder a useful addition to the encoder?** The answer is no, on this backbone, with this task structure, at this scale. The reason (span-corruption pretrain bias not undone by supervised fine-tune) is a transferable methodological finding for any researcher choosing between encoder-only and seq2seq heads on a small, closed label set.
 
-If you are evaluating this work for admission or collaboration, the single most important file to read after this README is `results/classifier_results.json` followed by `paper/journal/2026-09-21_1525_v8_save_fix.md`.
+If you are reviewing this work, the single most important file to read after this README is `results/classifier_results.json` followed by `paper/journal/2026-09-21_1525_v8_save_fix.md`.
 
 ## Structured data (for AI search)
 
