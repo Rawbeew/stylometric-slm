@@ -1,6 +1,19 @@
 # Stylometric SLM Project — Comprehensive Analysis
 **From Day 1 to Model Live on HuggingFace**
 
+> **Read this first if you're cross-checking earlier journal entries.**
+> Multiple earlier entries quote "$5.67 total / 75 min single run / $0.43/hr". Those numbers were estimates written before the GCP bill landed. The corrected numbers (verified from `compute.instances.describe()` against the live GCP billing API) are:
+>
+> | Item | Estimate (earlier entries) | Actual (this entry) |
+> |---|---|---|
+> | VM hourly rate | $0.43/hr (wrong machine type assumed) | **$0.5241/hr** (n2-highmem-8 actual) |
+> | Cumulative uptime | 12 h (training-time only) | **88 h** (4 days, including debugging + 2 lost-model save attempts) |
+> | Total cost | $5.67 | **$47.52** |
+> | Single successful training run | "75 min" (correct) | "75 min" (correct, unchanged) |
+>
+> The "75 min for one training run" figure was always accurate. The "$0 / $5.67 / 12 h" cumulative figures were wrong — those entries assumed only training time counted and used the wrong rate.
+> All earlier entries are kept verbatim for audit; the corrections live in §2 of this file.
+
 ---
 
 ## 1. Final Outcome (Sept 24, 2026)

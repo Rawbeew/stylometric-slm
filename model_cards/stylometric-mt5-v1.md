@@ -2,11 +2,11 @@
 library_name: transformers
 license: apache-2.0
 base_model: google/mt5-base
-pipeline_tag: text2text-generation
+pipeline_tag: text-generation
 tags:
 - mte5
 - mt5
-- text2text-generation
+- text-generation
 - seq2seq
 - stylometry
 - authorship-attribution
@@ -18,8 +18,8 @@ model-index:
 - name: stylometric-mt5-v1
   results:
   - task:
-      type: text2text-generation
-      name: Authorship Attribution (seq2seq framing)
+      type: text-generation
+      name: Authorship Attribution (seq2seq framing, negative result)
     dataset:
       type: stylometric-corpus-v1
       name: European literary corpus, 14 authors × 4 languages (en/fr/es/it)
@@ -27,13 +27,16 @@ model-index:
     - type: eval_loss
       value: 10.61
       name: Final eval loss after 5 epochs (random baseline 2.64)
+      verified: false
     - type: note
-      value: Decoder emits <extra_id_0> sentinel tokens; classifier accuracy not measurable. See cls-v1 for the encoder-only architecture that does not have this defect.
+      value: Decoder emits <extra_id_0> sentinel tokens; classifier accuracy not measurable.
+        See Chaiir/stylometric-cls-v1 for the encoder-only architecture that does not have this defect.
+      verified: false
 ---
 
 # stylometric-mt5-v1
 
-**Seq2seq fine-tune of mT5-base for authorship attribution framed as text-to-text generation.** Released as a **negative-result companion** to [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1), the encoder-only classifier for the same task that reaches 88.6% eval accuracy.
+**Seq2seq fine-tune of mT5-base for authorship attribution framed as text-to-text generation.** Released as a **negative-result companion** to [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1), the encoder-only classifier for the same task that reaches 91.2% eval accuracy.
 
 This model is a research artefact. The headline finding is **that the seq2seq regime fails this task** and why.
 
@@ -53,6 +56,8 @@ This model is a research artefact. The headline finding is **that the seq2seq re
 | **Authors** | 14 (same set as cls-v1) |
 | **Eval loss after 5 epochs** | 10.61 (random baseline for 14-way = log(14) ≈ 2.64) |
 | **Result** | **Decoder emits `<extra_id_0>` sentinels at inference.** Span-corruption pretrain bias not undone by supervised fine-tune. Classifier accuracy not measurable. |
+
+> **Note on pipeline tag.** This model is tagged `text-generation` because Hugging Face deprecated `text2text-generation` as a pipeline tag. The actual architecture is still a seq2seq `MT5ForConditionalGeneration`; the pipeline tag is purely metadata for the Inference API and model-browser filters, and is set to the closest valid official tag. To use the model, load it with `MT5ForConditionalGeneration.from_pretrained(...)` directly (do not call `pipeline(...)`).
 
 ## What went wrong (so a reviewer doesn't have to chase the journal)
 
@@ -126,7 +131,7 @@ For a model that is fine-tuned end-to-end on this task, use [`Chaiir/stylometric
 
 ## Companion artifacts
 
-- **Companion model (classifier that works):** [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1) — 88.6% eval accuracy
+- **Companion model (classifier that works):** [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1) — 91.2% eval accuracy
 - **Unpublished method paper (draft only):** `paper/drafts/encoder_only_beats_seq2seq.md` in the companion repo. Will be assigned a preprint DOI on submission.
 - **Related published application paper (Zenodo):** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study (binary human-vs-LLM-imitation differentiation on Sule Egya and Toyin Shittu). Same research program, not this artefact.
 - **Code + corpus + reproducibility journal:** <https://github.com/Rawbeew/stylometric-slm>

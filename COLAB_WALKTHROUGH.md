@@ -1,12 +1,44 @@
 # One-Click Colab Training
 
-## What this is
+> ⚠️ **Important — both `notebooks/one_click_train.ipynb` and `notebooks/finetune_mt5.ipynb` train the seq2seq variant. They reproduce the negative-result model (`Chaiir/stylometric-mt5-v1`), NOT the working classifier (`Chaiir/stylometric-cls-v1`).**
+>
+> If you want to reproduce the 91.2% published encoder classifier on Colab, see the encoder swap recipe below. As shipped, these notebooks are useful for **seeing the decoder bias live** and for **training your own seq2seq variant** (negative result confirmation).
 
-`notebooks/one_click_train.ipynb` is a self-contained Colab notebook that fine-tunes `google/mt5-base` on the stylometric corpus and pushes the result to your Hugging Face Hub.
+## Encoder swap — reproduce the 91.2% model on Colab
 
-## How to run it
+To convert `notebooks/one_click_train.ipynb` to train the encoder-only classifier:
 
-**Total time: ~45–60 min on free Colab T4 GPU.**
+1. Open `notebooks/one_click_train.ipynb` in Colab (free T4).
+2. In **Stage 4: Load mT5-base**, replace the `AutoModelForSeq2SeqLM` lines with:
+   ```python
+   from transformers import MT5EncoderModel
+   from torch import nn
+
+   class Classifier(nn.Module):
+       def __init__(self, encoder, n_classes):
+           super().__init__()
+           self.encoder = encoder
+           self.head = nn.Linear(encoder.config.d_model, n_classes)
+       def forward(self, input_ids, attention_mask=None, labels=None):
+           out = self.encoder(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
+           mask = attention_mask.unsqueeze(-1).float()
+           pooled = (out * mask).sum(1) / mask.sum(1).clamp(min=1)
+           logits = self.head(pooled)
+           loss = nn.functional.cross_entropy(logits, labels) if labels is not None else None
+           return type("O", (), {"loss": loss, "logits": logits})()
+
+   encoder = MT5EncoderModel.from_pretrained(BASE_MODEL)
+   N_CLASSES = 14  # 14 authors in the corpus
+   model = Classifier(encoder, N_CLASSES)
+   ```
+3. In **Stage 6: Train**, replace the `DataCollatorForSeq2Seq` with the default collator and pass `labels` as a `torch.long` class-index tensor (not a string).
+4. Total runtime: ~45–60 min on Colab free T4. Result: a model on your HuggingFace namespace matching `Chaiir/stylometric-cls-v1`'s eval profile.
+
+The full rationale is in `paper/journal/2026-09-21_1040_v7_classification_fix.md` (the v6→v7 encoder-swap journal) and `paper/journal/2026-09-21_1525_v8_save_fix.md` (the safetensors tied-weight workaround). A PR adding the encoder variant as `notebooks/one_click_train_cls.ipynb` is on the roadmap but not shipped.
+
+## Original walkthrough (seq2seq path — negative result)
+
+The seq2seq notebook trains `AutoModelForSeq2SeqLM` and demonstrates the failure mode (decoder emits `<extra_id_0>` sentinel). Total time: ~45–60 min on free Colab T4 GPU.
 
 ### Step 1 — Get a Hugging Face token
 
@@ -51,9 +83,9 @@ to your actual HF username.
    - Install dependencies
    - Upload the dataset to your HF repo (one-time)
    - Load mT5-base from HF
-   - Fine-tune for 5 epochs
+   - Fine-tune for 5 epochs (seq2seq)
    - Push the trained model to your HF repo
-   - Print per-author per-language accuracy
+   - Print per-author per-language accuracy (will be near 0% for seq2seq)
    - Save `results.json` for download
 
 ### Step 6 — Get the results
@@ -76,11 +108,11 @@ https://huggingface.co/<your-username>/stylometric-slm-mt5
 | Colab disconnects mid-training | Re-run, the trainer saves checkpoints at every epoch |
 | Dataset upload fails | Run `python scripts/push_to_hf.py` locally first (uses `~/.cache/huggingface/token`) |
 
-## What you get
+## What you get (seq2seq path)
 
 After training, you have:
-- A published mT5 model on your HF account
-- Per-author per-language accuracy numbers
+- A published seq2seq model on your HF account (negative result, near-0% attribution accuracy)
+- Per-author per-language accuracy numbers showing the decoder bias
 - A reproducible build (anyone can clone the dataset + notebook and reproduce)
 
-That's a real paper's worth of work. The next step is the paper writeup — let me know when the training finishes and I'll draft it.
+The next step is to swap to the encoder architecture (see top of this file) and re-train to reach the published 91.2%.
