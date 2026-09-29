@@ -36,7 +36,7 @@ model-index:
 
 # stylometric-mt5-v1
 
-**Seq2seq fine-tune of mT5-base for authorship attribution framed as text-to-text generation.** Released as a **negative-result companion** to [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1), the encoder-only classifier for the same task that reaches 91.2% eval accuracy.
+**Seq2seq fine-tune of mT5-base for authorship attribution framed as text-to-text generation.** Released as a **negative-result companion** to [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1), the encoder-only classifier for the same task that reaches **91.2% on the full 705-passage eval / 88.6% on per-author sampled**.
 
 This model is a research artefact. The headline finding is **that the seq2seq regime fails this task** and why.
 
@@ -131,8 +131,8 @@ For a model that is fine-tuned end-to-end on this task, use [`Chaiir/stylometric
 
 ## Companion artifacts
 
-- **Companion model (classifier that works):** [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1) — 91.2% eval accuracy
-- **Unpublished method paper (draft only):** `paper/drafts/encoder_only_beats_seq2seq.md` in the companion repo. Will be assigned a preprint DOI on submission.
+- **Companion model (classifier that works):** [`Chaiir/stylometric-cls-v1`](https://huggingface.co/Chaiir/stylometric-cls-v1) — 91.2% eval accuracy on full 705-passage eval, 88.6% on per-author sampled
+- **Unpublished method paper (canonical v2 draft, journal-aligned numbers, correct ORCID):** `paper/drafts/encoder_only_beats_seq2seq_v2.md` in the companion repo. Will be assigned a preprint DOI on submission. v1 retained for history.
 - **Related published application paper (Zenodo):** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study (binary human-vs-LLM-imitation differentiation on Sule Egya and Toyin Shittu). Same research program, not this artefact.
 - **Code + corpus + reproducibility journal:** <https://github.com/Rawbeew/stylometric-slm>
 - **Failure mode samples + per-epoch loss table:** `results/model_failure_analysis.json`

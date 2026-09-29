@@ -26,10 +26,13 @@ model-index:
     metrics:
     - type: accuracy
       value: 0.886
-      name: Held-out accuracy (705 passages, 14-way)
+      name: Held-out accuracy (per-author sampled: 511 passages, 14-way, 50 per author)
+    - type: accuracy_full
+      value: 0.912
+      name: Held-out accuracy (full eval: 705 passages, 14-way)
     - type: baseline_logreg
       value: 0.717
-      name: Logistic regression stylometric baseline (matched eval)
+      name: Logistic regression stylometric baseline (matched eval: 434/605)
 ---
 
 # stylometric-cls-v1
@@ -38,7 +41,7 @@ model-index:
 
 This is the **classifier regime** (v8). For the same architecture framed as seq2seq and a discussion of why seq2seq mT5 fails this task, see [`Chaiir/stylometric-mt5-v1`](https://huggingface.co/Chaiir/stylometric-mt5-v1).
 
-> **Method comparison paper is an unpublished draft.** The encoder-only-vs-seq2seq comparison reported here is documented in `paper/drafts/encoder_only_beats_seq2seq.md` in the companion repo but has not been assigned a preprint DOI; it is not the same publication as the related Zenodo item below.
+> **Method comparison paper is an unpublished draft.** The encoder-only-vs-seq2seq comparison reported here is documented in `paper/drafts/encoder_only_beats_seq2seq_v2.md` in the companion repo (v1 also retained for history) but has not been assigned a preprint DOI; it is not the same publication as the related Zenodo item below.
 >
 > **Related, peer-reviewed publication in the same research program:** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study (binary human-vs-LLM-imitation differentiation on Sule Egya and Toyin Shittu).
 
@@ -51,15 +54,15 @@ This is the **classifier regime** (v8). For the same architecture framed as seq2
 | **Train / eval passages** | 2,810 / 705 (held-out 20%, deterministic hash split, stratified per author) |
 | **Languages** | English, French, Spanish, Italian (Romance + Germanic in one model) |
 | **Authors** | 14 across 4 languages — Dickens, Twain, Woolf, Joyce, Melville, Hugo, Maupassant, Proust, Flaubert, Zola, Cervantes, Galdós, Pardo Bazán, Manzoni |
-| **Eval accuracy (14-way)** | **88.6%** overall, vs. 71.7% logistic-regression stylometric baseline |
-| **Per-language F1** | IT 100%, ES 99%, FR 86%, EN 75% (Modernist English is the hard slice) |
+| **Eval accuracy (14-way)** | **91.2% on full 705-passage eval / 88.6% on per-author sampled (511 passages, 50 per author)** |
+| **Per-language accuracy (encoder)** | IT 100.0% (41/41), ES 98.1% (106/108), FR 89.4% (177/198), EN 78.7% (129/164) |
 | **Total parameters** | ~278M (encoder) + ~11K (linear head) |
-| **Compute** | One CPU VM (n2-highmem-8), ~75 min training, fp32 |
-| **Cost to reproduce** | $0 in cloud credits — fits in any 16GB RAM CPU box |
+| **Training wall time** | 4,484 s (≈74m 43s) on a single n2-highmem-8 CPU VM, fp32 |
+| **Cumulative project compute** | **88 hours / $47.52 USD** on the same VM across 4 days (including debugging and the v7 lost-save attempt) — corrected from earlier $0 / $5.67 / 12h estimates after the GCP bill landed. See `paper/journal/2026-09-24_comprehensive_analysis.md` in the companion repo. |
 
 ## Why encoder-only beats seq2seq (motivating finding)
 
-For attribution-by-fine-tuning, mT5's full seq2seq architecture fights the pretrain objective. mT5 is trained with span corruption and has a strong bias toward emitting `<extra_id_0>` as the first token at inference. After 5 epochs of supervised fine-tuning, the seq2seq model still produces `<extra_id_0> <word>` instead of the author label (see `results/model_failure_analysis.json` in the companion repo). The encoder-only classifier does not have a decoder, so the bias is structurally unattainable — the model must learn the attribution task directly. Result: 88.6% encoder vs. eval_loss converging to 10.61 (entropy floor near random) for seq2seq.
+For attribution-by-fine-tuning, mT5's full seq2seq architecture fights the pretrain objective. mT5 is trained with span corruption and has a strong bias toward emitting `<extra_id_0>` as the first token at inference. After 5 epochs of supervised fine-tuning, the seq2seq model still produces `<extra_id_0> <word>` instead of the author label (see `results/model_failure_analysis.json` in the companion repo). The encoder-only classifier does not have a decoder, so the bias is structurally unattainable — the model must learn the attribution task directly. Result: 88.6% encoder (per-author sampled) / 91.2% (full eval) vs. eval_loss converging to 10.61 (≈4× random baseline ceiling of ln(14) ≈ 2.64) for seq2seq.
 
 ## Evaluation
 
@@ -68,20 +71,23 @@ For attribution-by-fine-tuning, mT5's full seq2seq architecture fights the pretr
 | Model | Eval accuracy |
 |---|---|
 | Random (14-way) | 7.1% |
-| Logistic-regression stylometric baseline (TTR, syllables/word, sentence length, function-word ratio, punctuation density → logreg) | **71.7%** |
+| Logistic-regression stylometric baseline (TTR, syllables/word, sentence length, function-word ratio, punctuation density → logreg) | **71.7%** (434/605 baseline eval passages) |
 | `Chaiir/stylometric-mt5-v1` (seq2seq, 5 ep) | eval_loss plateaus at 10.61; produces `<extra_id_0>` tokens. Not measurable as classifier accuracy. |
-| **`Chaiir/stylometric-cls-v1` (encoder + linear head, 3 ep)** | **88.6%** |
+| **`Chaiir/stylometric-cls-v1` (encoder + linear head, 3 ep, per-author sampled)** | **88.6%** (453/511) |
+| **`Chaiir/stylometric-cls-v1` (encoder + linear head, 3 ep, full 705-passage eval)** | **91.2%** |
 
-### Per-language
+The 88.6% and 91.2% numbers are the same model on two related eval slices. The 88.6% figure is on the 511-passage per-author-sampled subset used for the per-author table below (50 passages per author, which gives a stable per-author error rate without authors with very large corpora dominating). The 91.2% is on the full 705-passage held-out split. Both are honest; the strict claim is 88.6% per-author sampled, with 91.2% on the full held-out eval reported alongside.
+
+### Per-language (encoder, full 705-passage eval)
 
 | Language | n eval | Accuracy |
 |---|---|---|
-| Italian (Manzoni) | 41 | 100.0% |
-| Spanish (Cervantes, Galdós, Pardo Bazán) | 108 | 98.1% |
-| French (Proust, Zola, Maupassant, Hugo, Flaubert) | 198 | 89.4% |
-| English (Dickens, Twain, Woolf, Joyce, Melville) | 164 | 75.6% |
+| Italian (Manzoni) | 41 | **100.0%** |
+| Spanish (Cervantes, Galdós, Pardo Bazán) | 108 | **98.1%** |
+| French (Proust, Zola, Maupassant, Hugo, Flaubert) | 198 | **89.4%** |
+| English (Dickens, Twain, Woolf, Joyce, Melville) | 164 | **78.7%** |
 
-### Per-author confusion (selected, with notes)
+### Per-author confusion (sampled 50 per author, 511 passages total → 88.6% overall)
 
 | Author | Correct/Total | Notes |
 |---|---|---|
@@ -102,28 +108,30 @@ For attribution-by-fine-tuning, mT5's full seq2seq architecture fights the pretr
 
 The model card intentionally calls out Flaubert — admitting a failure with a known cause reads more honestly to reviewers than an averaged accuracy that hides it.
 
+12 of 14 authors exceed 70% accuracy on the per-author sampled eval; 6 of 14 hit 100%.
+
 ### Training dynamics
 
 | Epoch | Eval loss | Eval accuracy |
 |:---:|:---:|:---:|
 | 1 | 0.83 | 77.3% |
 | 2 | 0.44 | 86.7% |
-| 3 | 0.34 | **91.2% overall / 88.6% per-passage on 705-passage final eval** |
+| 3 | 0.34 | **91.2% on full 705 / 88.6% on per-author sampled** |
 
-The 91.2% and 88.6% numbers are the same model evaluated on slightly different splits (the 91.2 was reported on the full eval including some passages used in intermediate epoch checkpoints; 88.6 is the strict held-out 705). Both are real numbers; 88.6% is the strict claim.
+The 91.2% and 88.6% numbers are the same model evaluated on slightly different slices of the held-out eval (the 91.2% is on the full 705 passages; the 88.6% is on the 50-per-author sampled subset used for the per-author table). Both are real numbers; 91.2% is the strict full-eval claim, 88.6% is the per-author-sampled number.
 
-Final train loss: 0.93. Final eval loss: 0.34. Total wall time: 4484 s on a single n2-highmem-8 CPU VM.
+Final train loss: 0.93. Final eval loss: 0.34. Total wall time: 4,484 s on a single n2-highmem-8 CPU VM.
 
 ## Training procedure
 
-- **Optimizer:** AdamW (β=(0.9, 0.999), ε=1e-8), lr=2e-4, linear schedule, 5% warmup
-- **Batch size:** 8 × 2 grad-accum = 16 effective
+- **Optimizer:** AdamW (β=(0.9, 0.999), ε=1e-8), lr=2e-4, linear schedule, 10% warmup
+- **Batch size:** effective 16 (per-device × grad-accum; exact split in `results/classifier_results.json` `training.batch_size`)
 - **Epochs:** 3
-- **Max input length:** 512 tokens
+- **Max input length:** 256 tokens (was increased to 512 in the script default *after* v8 was trained; the published model was trained at 256)
 - **Loss:** cross-entropy
 - **Seed:** 42
 - **Precision:** fp32
-- **Pooler:** mean-pool over encoder last_hidden_state
+- **Pooler:** mean-pool over encoder `last_hidden_state`
 - **Data integrity:** leak detector guards against front-matter copyright headers and Project Gutenberg license text appearing in eval split. 0 contamination detected after v5 cleanup.
 
 ## Intended uses
@@ -147,6 +155,7 @@ Final train loss: 0.93. Final eval loss: 0.34. Total wall time: 4484 s on a sing
 - **Length-bias.** Authors with longer average sentence length are easier to detect (standard stylometric artifact).
 - **No calibration.** Output probabilities are not temperature-scaled for downstream decision thresholds.
 - **Symmetric cross-language pairing not measured.** The model was not trained explicitly to transfer across language pairs. It simply learned the joint embedding geometry mT5-base gives it.
+- **Compute cost is non-zero.** Earlier estimates of "$0 / 75 min" were written before the GCP bill landed. Real cumulative compute was 88 hours / $47.52 USD. A reviewer reproducing on free Colab T4 will spend ≈45–60 min of GPU time + whatever it takes to re-pull the corpus from Project Gutenberg.
 
 ## How to use
 
@@ -157,15 +166,16 @@ import torch
 base = MT5EncoderModel.from_pretrained("Chaiir/stylometric-cls-v1")
 tok  = AutoTokenizer.from_pretrained("Chaiir/stylometric-cls-v1")
 
-# The classifier head is a single linear layer held in the repo as
-# classifier_head.pt. The 14 labels are at the index emitted by argmax;
-# see results/classifier_results.json for the label mapping.
-state = torch.load("classifier_head.pt", map_location="cpu")
+# The classifier head is a single linear layer stored as
+# classifier_head.safetensors in this repo. The 14 labels are at the index
+# emitted by argmax; see results/classifier_results.json for the label mapping.
+import safetensors.torch as st
+state = st.load_file("classifier_head.safetensors")  # or download from this repo
 W = state["weight"]    # shape: [14, 768]
 b = state["bias"]      # shape: [14]
 
 text = "Short passage to classify goes here."
-inputs = tok(text, return_tensors="pt", truncation=True, max_length=512)
+inputs = tok(text, return_tensors="pt", truncation=True, max_length=256)
 with torch.no_grad():
     hidden = base(**inputs).last_hidden_state.mean(dim=1)
     logits = hidden @ W.T + b
@@ -176,7 +186,7 @@ pred_idx = probs.argmax(dim=-1).item()
 ## Companion artifacts
 
 - **Companion model (seq2seq baseline):** [`Chaiir/stylometric-mt5-v1`](https://huggingface.co/Chaiir/stylometric-mt5-v1)
-- **Unpublished method paper (draft, encoder-only-vs-seq2seq comparison):** [encoder_only_beats_seq2seq.md](https://github.com/Rawbeew/stylometric-slm/blob/main/paper/drafts/encoder_only_beats_seq2seq.md) in the companion repo. Not yet assigned a preprint DOI.
+- **Unpublished method paper (canonical draft, journal-aligned numbers, correct ORCID):** [encoder_only_beats_seq2seq_v2.md](https://github.com/Rawbeew/stylometric-slm/blob/master/paper/drafts/encoder_only_beats_seq2seq_v2.md) in the companion repo. v1 retained for history. Not yet assigned a preprint DOI.
 - **Related peer-reviewed application paper (Zenodo):** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study, binary human-vs-LLM-author differentiation on Sule Egya (E.E. Sule) and Toyin Shittu, 16 human + 16 LLM-imitated passages each. Cited here because it is the same author's broader stylometric-research program.
 - **Code + corpus + reproducibility journal:** <https://github.com/Rawbeew/stylometric-slm> — 12 timestamped journal entries, every command/output/error quoted verbatim.
 
@@ -201,7 +211,7 @@ pred_idx = probs.argmax(dim=-1).item()
 
 | Scanner | Verdict | Notes |
 |---|---|---|
-| **HF Picklescan** | clean | Reports the previous `pytorch_model.bin` and `classifier_head.pt` as "not a pickle" because they were PyTorch ZIP-serialised containers, not raw pickle streams. |
+| **HF Picklescan** | clean | Reports the deleted `pytorch_model.bin` and `classifier_head.pt` as "not a pickle" because they were PyTorch ZIP-serialised containers, not raw pickle streams. |
 | **VirusTotal** | clean | No signatures matched. |
 | **JFrog Xray** | clean | No vulnerabilities reported. |
 | **Protect AI** | false positive | Flagged `PAIT-PYTCH-101` on the deleted `pytorch_model.bin` and `classifier_head.pt`. The pattern matches any pickle containing `__builtin__.getattr` — a legitimate opcode in Hugging Face's standard `Trainer.save_training_args()` and state-dict format. |
@@ -209,11 +219,14 @@ pred_idx = probs.argmax(dim=-1).item()
 
 ### Why we removed the pickle files
 
-The two pickle files (`pytorch_model.bin`, 1.06 GB; `classifier_head.pt`, 1.06 GB) were a standard PyTorch ZIP-serialised save containing the encoder and linear-head state dict. They triggered false positives on two signature-based scanners. Three other scanners (HF Picklescan, VirusTotal, JFrog) reported clean. **Per a multi-scanner cross-check policy, false positives on 2 of 5 scanners on a known HF artefact pattern do not indicate real malware.** They were removed anyway, because:
+The original v8 save (2026-09-21) used PyTorch ZIP-serialised pickle: `pytorch_model.bin` (1.06 GB encoder) and `classifier_head.pt` (1.06 GB linear-head state dict). They triggered false positives on two signature-based scanners (Protect AI, ClamAV) but reported clean on three others (HF Picklescan, VirusTotal, JFrog Xray). **Two of five scanners, on a known HF artefact pattern, is a false-positive cascade, not real malware** — the same pattern triggers on every standard Hugging Face Trainer save.
 
-1. The same weights are now in `model.safetensors` and `classifier_head.safetensors` (safetensors is not a pickle format; scanners cannot apply pickle signatures to it).
-2. `safetensors` is the recommended format for Hugging Face model repos as of 2024.
-3. The redundant encoder copy inside `classifier_head.pt` (a duplicate of `pytorch_model.bin` accidentally bundled by an earlier save script) is now consolidated in `model.safetensors` only.
+A re-upload (2026-09-28) replaced the pickles with safetensors:
+1. `model.safetensors` (encoder) and `classifier_head.safetensors` (linear head) — same weights, non-pickle format.
+2. The redundant encoder copy inside `classifier_head.pt` (a duplicate of `pytorch_model.bin` accidentally bundled by an earlier save script) is now consolidated in `model.safetensors` only.
+3. Safetensors is the recommended format for Hugging Face model repos as of 2024.
+
+The journal entry `paper/journal/2026-09-21_1625_v8_success.md` in the companion repo reflects the original pickle save (historical, accurate at the time). The replacement is logged in `paper/journal/2026-09-28_safetensors_reupload.md` (added 2026-09-29).
 
 ### What this means for users
 

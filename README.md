@@ -16,7 +16,7 @@
 
 ## TL;DR for a PI skimming for 30 seconds
 
-Cross-lingual authorship attribution is a small-N, closed-set, multilingual classification problem. This repo ships the right architecture (encoder-only mT5 with linear head), the eval, and a 12-entry reproducibility journal that records every command and output verbatim. The encoder-only model outperforms the seq2seq baseline by 20+ points absolute, and the failure mode of the seq2seq model (decoder bias toward emitting the `<extra_id_0>` span-corruption sentinel) is documented concretely with sample outputs and a per-epoch loss curve.
+Cross-lingual authorship attribution is a small-N, closed-set, multilingual classification problem. This repo ships the right architecture (encoder-only mT5 with linear head), the eval, and a 13-entry reproducibility journal that records every command and output verbatim. The encoder-only model outperforms the seq2seq baseline by 20+ points absolute, and the failure mode of the seq2seq model (decoder bias toward emitting the `<extra_id_0>` span-corruption sentinel) is documented concretely with sample outputs and a per-epoch loss curve.
 
 The research question the repo actually answers is: **for a closed-set multilingual classification task, is a seq2seq decoder a useful addition to the encoder?** The answer is no, on this backbone, with this task structure, at this scale. The reason (span-corruption pretrain bias not undone by supervised fine-tune) is a transferable methodological finding for any researcher choosing between encoder-only and seq2seq heads on a small, closed label set.
 
@@ -59,7 +59,7 @@ The repo publishes a machine-readable summary at [`LLM.txt`](./LLM.txt) followin
 | Encoder-only classifier eval (91.2% full / 88.6% sampled) | `results/classifier_results.json` | ✅ |
 | Seq2seq failure samples + per-epoch loss | `results/model_failure_analysis.json` | ✅ |
 | LLM-as-judge audit of the journal | `results/llm_judge_report.json` | ✅ |
-| Reproducibility journal (12 entries) | `paper/journal/` | ✅ |
+| Reproducibility journal (13 entries) | `paper/journal/` | ✅ |
 | Method paper draft (30 K words) | `paper/drafts/encoder_only_beats_seq2seq_v2.md` | ✅ |
 | Trained model card sources | `model_cards/` | ✅ |
 | Combined journal PDF | `results/journal_combined.pdf` | ✅ |
@@ -194,7 +194,7 @@ stylometric-slm/
 │   ├── drafts/
 │   │   ├── encoder_only_beats_seq2seq.md      # v1 (initial draft, ORCID placeholder, kept for history)
 │   │   └── encoder_only_beats_seq2seq_v2.md   # v2 (canonical draft, correct ORCID, journal-aligned numbers)
-│   └── journal/                 # 12 timestamped reproducibility entries
+│   └── journal/                 # 13 timestamped reproducibility entries
 ├── model_cards/
 │   ├── stylometric-cls-v1.md    # verbatim HF card for the working model (synced from Hub)
 │   └── stylometric-mt5-v1.md    # verbatim HF card for the negative-result pair (synced from Hub)
