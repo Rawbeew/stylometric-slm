@@ -1,0 +1,162 @@
+{
+  "method": "delta_top1000",
+  "seed": 42,
+  "loao": {
+    "cervantes": {
+      "n_eval": 67,
+      "impostor_wins": {
+        "pardo_bazan": 53,
+        "galdos": 14
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.2363,
+      "mean_distance_spread": 0.1631,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "dickens": {
+      "n_eval": 83,
+      "impostor_wins": {
+        "melville": 29,
+        "woolf": 23,
+        "twain": 17
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4867,
+      "mean_distance_spread": 0.1109,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "flaubert": {
+      "n_eval": 19,
+      "impostor_wins": {
+        "melville": 7,
+        "maupassant": 5,
+        "twain": 3
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4725,
+      "mean_distance_spread": 0.1034,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "galdos": {
+      "n_eval": 72,
+      "impostor_wins": {
+        "pardo_bazan": 72
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.2192,
+      "mean_distance_spread": 0.165,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "hugo": {
+      "n_eval": 110,
+      "impostor_wins": {
+        "melville": 50,
+        "twain": 40,
+        "joyce": 15
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4423,
+      "mean_distance_spread": 0.0965,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "joyce": {
+      "n_eval": 19,
+      "impostor_wins": {
+        "melville": 16,
+        "flaubert": 1,
+        "twain": 1
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4873,
+      "mean_distance_spread": 0.0858,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "manzoni": {
+      "n_eval": 41,
+      "impostor_wins": {
+        "pardo_bazan": 24,
+        "zola": 17
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.3421,
+      "mean_distance_spread": 0.0823,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "maupassant": {
+      "n_eval": 112,
+      "impostor_wins": {
+        "flaubert": 43,
+        "twain": 40,
+        "hugo": 10
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4722,
+      "mean_distance_spread": 0.116,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "melville": {
+      "n_eval": 30,
+      "impostor_wins": {
+        "twain": 26,
+        "dickens": 3,
+        "hugo": 1
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4449,
+      "mean_distance_spread": 0.0875,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "pardo_bazan": {
+      "n_eval": 8,
+      "impostor_wins": {
+        "galdos": 8
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.2769,
+      "mean_distance_spread": 0.1378,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "proust": {
+      "n_eval": 43,
+      "impostor_wins": {
+        "zola": 43
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.2035,
+      "mean_distance_spread": 0.1306,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "twain": {
+      "n_eval": 36,
+      "impostor_wins": {
+        "melville": 36
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4543,
+      "mean_distance_spread": 0.0898,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "woolf": {
+      "n_eval": 29,
+      "impostor_wins": {
+        "twain": 11,
+        "melville": 8,
+        "dickens": 6
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.4817,
+      "mean_distance_spread": 0.1041,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    },
+    "zola": {
+      "n_eval": 36,
+      "impostor_wins": {
+        "proust": 36
+      },
+      "forced_assignment_rate": 1.0,
+      "mean_min_distance": 0.1759,
+      "mean_distance_spread": 0.1236,
+      "note": "no reject option \u2014 every held-out passage is assigned to an impostor; the diagnostic is WHICH impostor and how tight the assignment is"
+    }
+  }
+}

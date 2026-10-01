@@ -1,0 +1,93 @@
+{
+  "top_n": 1000,
+  "in_dist": {
+    "mean": 0.38181170538455633,
+    "median": 0.4376376749946983,
+    "p90": 0.5073447206171937,
+    "n": 705
+  },
+  "loao": {
+    "cervantes": {
+      "mean": 0.23627877778094816,
+      "n": 67
+    },
+    "dickens": {
+      "mean": 0.48668002767694274,
+      "n": 83
+    },
+    "flaubert": {
+      "mean": 0.47251489235442196,
+      "n": 19
+    },
+    "galdos": {
+      "mean": 0.2192237323476287,
+      "n": 72
+    },
+    "hugo": {
+      "mean": 0.44233725533886276,
+      "n": 110
+    },
+    "joyce": {
+      "mean": 0.48731981381715517,
+      "n": 19
+    },
+    "manzoni": {
+      "mean": 0.34205104933005875,
+      "n": 41
+    },
+    "maupassant": {
+      "mean": 0.4722198054161865,
+      "n": 112
+    },
+    "melville": {
+      "mean": 0.44485019027072187,
+      "n": 30
+    },
+    "pardo_bazan": {
+      "mean": 0.2769277231704998,
+      "n": 8
+    },
+    "proust": {
+      "mean": 0.2034601202404774,
+      "n": 43
+    },
+    "twain": {
+      "mean": 0.45433482212855825,
+      "n": 36
+    },
+    "woolf": {
+      "mean": 0.48168257618004084,
+      "n": 29
+    },
+    "zola": {
+      "mean": 0.1758964165644997,
+      "n": 36
+    }
+  },
+  "thresholds": {
+    "0.9": {
+      "unseen_rejected": 0.0,
+      "known_falserejected": 0.0
+    },
+    "1.0": {
+      "unseen_rejected": 0.0,
+      "known_falserejected": 0.0
+    },
+    "1.1": {
+      "unseen_rejected": 0.0,
+      "known_falserejected": 0.0
+    },
+    "1.2": {
+      "unseen_rejected": 0.0,
+      "known_falserejected": 0.0
+    },
+    "1.3": {
+      "unseen_rejected": 0.0,
+      "known_falserejected": 0.0
+    },
+    "1.4": {
+      "unseen_rejected": 0.0,
+      "known_falserejected": 0.0
+    }
+  }
+}

@@ -1,0 +1,472 @@
+{
+  "seed": 42,
+  "split": {
+    "train": 2810,
+    "eval": 705,
+    "deterministic": "sha256-hash bucketing, build_split.py"
+  },
+  "methods": [
+    {
+      "method": "delta_top100",
+      "accuracy": 0.8014,
+      "per_author": {
+        "cervantes": {
+          "correct": 62,
+          "total": 67,
+          "accuracy": 0.925
+        },
+        "dickens": {
+          "correct": 72,
+          "total": 83,
+          "accuracy": 0.867
+        },
+        "flaubert": {
+          "correct": 14,
+          "total": 19,
+          "accuracy": 0.737
+        },
+        "galdos": {
+          "correct": 59,
+          "total": 72,
+          "accuracy": 0.819
+        },
+        "hugo": {
+          "correct": 81,
+          "total": 110,
+          "accuracy": 0.736
+        },
+        "joyce": {
+          "correct": 14,
+          "total": 19,
+          "accuracy": 0.737
+        },
+        "manzoni": {
+          "correct": 41,
+          "total": 41,
+          "accuracy": 1.0
+        },
+        "maupassant": {
+          "correct": 60,
+          "total": 112,
+          "accuracy": 0.536
+        },
+        "melville": {
+          "correct": 24,
+          "total": 30,
+          "accuracy": 0.8
+        },
+        "pardo_bazan": {
+          "correct": 8,
+          "total": 8,
+          "accuracy": 1.0
+        },
+        "proust": {
+          "correct": 43,
+          "total": 43,
+          "accuracy": 1.0
+        },
+        "twain": {
+          "correct": 33,
+          "total": 36,
+          "accuracy": 0.917
+        },
+        "woolf": {
+          "correct": 19,
+          "total": 29,
+          "accuracy": 0.655
+        },
+        "zola": {
+          "correct": 35,
+          "total": 36,
+          "accuracy": 0.972
+        }
+      }
+    },
+    {
+      "method": "delta_top500",
+      "accuracy": 0.895,
+      "per_author": {
+        "cervantes": {
+          "correct": 67,
+          "total": 67,
+          "accuracy": 1.0
+        },
+        "dickens": {
+          "correct": 74,
+          "total": 83,
+          "accuracy": 0.892
+        },
+        "flaubert": {
+          "correct": 17,
+          "total": 19,
+          "accuracy": 0.895
+        },
+        "galdos": {
+          "correct": 64,
+          "total": 72,
+          "accuracy": 0.889
+        },
+        "hugo": {
+          "correct": 99,
+          "total": 110,
+          "accuracy": 0.9
+        },
+        "joyce": {
+          "correct": 18,
+          "total": 19,
+          "accuracy": 0.947
+        },
+        "manzoni": {
+          "correct": 41,
+          "total": 41,
+          "accuracy": 1.0
+        },
+        "maupassant": {
+          "correct": 79,
+          "total": 112,
+          "accuracy": 0.705
+        },
+        "melville": {
+          "correct": 29,
+          "total": 30,
+          "accuracy": 0.967
+        },
+        "pardo_bazan": {
+          "correct": 8,
+          "total": 8,
+          "accuracy": 1.0
+        },
+        "proust": {
+          "correct": 41,
+          "total": 43,
+          "accuracy": 0.953
+        },
+        "twain": {
+          "correct": 35,
+          "total": 36,
+          "accuracy": 0.972
+        },
+        "woolf": {
+          "correct": 23,
+          "total": 29,
+          "accuracy": 0.793
+        },
+        "zola": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        }
+      }
+    },
+    {
+      "method": "delta_top1000",
+      "accuracy": 0.8496,
+      "per_author": {
+        "cervantes": {
+          "correct": 67,
+          "total": 67,
+          "accuracy": 1.0
+        },
+        "dickens": {
+          "correct": 74,
+          "total": 83,
+          "accuracy": 0.892
+        },
+        "flaubert": {
+          "correct": 16,
+          "total": 19,
+          "accuracy": 0.842
+        },
+        "galdos": {
+          "correct": 56,
+          "total": 72,
+          "accuracy": 0.778
+        },
+        "hugo": {
+          "correct": 98,
+          "total": 110,
+          "accuracy": 0.891
+        },
+        "joyce": {
+          "correct": 17,
+          "total": 19,
+          "accuracy": 0.895
+        },
+        "manzoni": {
+          "correct": 41,
+          "total": 41,
+          "accuracy": 1.0
+        },
+        "maupassant": {
+          "correct": 59,
+          "total": 112,
+          "accuracy": 0.527
+        },
+        "melville": {
+          "correct": 28,
+          "total": 30,
+          "accuracy": 0.933
+        },
+        "pardo_bazan": {
+          "correct": 8,
+          "total": 8,
+          "accuracy": 1.0
+        },
+        "proust": {
+          "correct": 43,
+          "total": 43,
+          "accuracy": 1.0
+        },
+        "twain": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        },
+        "woolf": {
+          "correct": 20,
+          "total": 29,
+          "accuracy": 0.69
+        },
+        "zola": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        }
+      }
+    },
+    {
+      "method": "delta_top3000",
+      "accuracy": 0.8071,
+      "per_author": {
+        "cervantes": {
+          "correct": 65,
+          "total": 67,
+          "accuracy": 0.97
+        },
+        "dickens": {
+          "correct": 81,
+          "total": 83,
+          "accuracy": 0.976
+        },
+        "flaubert": {
+          "correct": 19,
+          "total": 19,
+          "accuracy": 1.0
+        },
+        "galdos": {
+          "correct": 44,
+          "total": 72,
+          "accuracy": 0.611
+        },
+        "hugo": {
+          "correct": 85,
+          "total": 110,
+          "accuracy": 0.773
+        },
+        "joyce": {
+          "correct": 19,
+          "total": 19,
+          "accuracy": 1.0
+        },
+        "manzoni": {
+          "correct": 41,
+          "total": 41,
+          "accuracy": 1.0
+        },
+        "maupassant": {
+          "correct": 43,
+          "total": 112,
+          "accuracy": 0.384
+        },
+        "melville": {
+          "correct": 27,
+          "total": 30,
+          "accuracy": 0.9
+        },
+        "pardo_bazan": {
+          "correct": 8,
+          "total": 8,
+          "accuracy": 1.0
+        },
+        "proust": {
+          "correct": 43,
+          "total": 43,
+          "accuracy": 1.0
+        },
+        "twain": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        },
+        "woolf": {
+          "correct": 22,
+          "total": 29,
+          "accuracy": 0.759
+        },
+        "zola": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        }
+      }
+    },
+    {
+      "method": "charsvm_3-5",
+      "accuracy": 1.0,
+      "per_author": {
+        "cervantes": {
+          "correct": 67,
+          "total": 67,
+          "accuracy": 1.0
+        },
+        "dickens": {
+          "correct": 83,
+          "total": 83,
+          "accuracy": 1.0
+        },
+        "flaubert": {
+          "correct": 19,
+          "total": 19,
+          "accuracy": 1.0
+        },
+        "galdos": {
+          "correct": 72,
+          "total": 72,
+          "accuracy": 1.0
+        },
+        "hugo": {
+          "correct": 110,
+          "total": 110,
+          "accuracy": 1.0
+        },
+        "joyce": {
+          "correct": 19,
+          "total": 19,
+          "accuracy": 1.0
+        },
+        "manzoni": {
+          "correct": 41,
+          "total": 41,
+          "accuracy": 1.0
+        },
+        "maupassant": {
+          "correct": 112,
+          "total": 112,
+          "accuracy": 1.0
+        },
+        "melville": {
+          "correct": 30,
+          "total": 30,
+          "accuracy": 1.0
+        },
+        "pardo_bazan": {
+          "correct": 8,
+          "total": 8,
+          "accuracy": 1.0
+        },
+        "proust": {
+          "correct": 43,
+          "total": 43,
+          "accuracy": 1.0
+        },
+        "twain": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        },
+        "woolf": {
+          "correct": 29,
+          "total": 29,
+          "accuracy": 1.0
+        },
+        "zola": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        }
+      }
+    },
+    {
+      "method": "logreg_wordtfidf_705",
+      "accuracy": 0.9745,
+      "per_author": {
+        "cervantes": {
+          "correct": 67,
+          "total": 67,
+          "accuracy": 1.0
+        },
+        "dickens": {
+          "correct": 81,
+          "total": 83,
+          "accuracy": 0.976
+        },
+        "flaubert": {
+          "correct": 16,
+          "total": 19,
+          "accuracy": 0.842
+        },
+        "galdos": {
+          "correct": 72,
+          "total": 72,
+          "accuracy": 1.0
+        },
+        "hugo": {
+          "correct": 110,
+          "total": 110,
+          "accuracy": 1.0
+        },
+        "joyce": {
+          "correct": 14,
+          "total": 19,
+          "accuracy": 0.737
+        },
+        "manzoni": {
+          "correct": 41,
+          "total": 41,
+          "accuracy": 1.0
+        },
+        "maupassant": {
+          "correct": 112,
+          "total": 112,
+          "accuracy": 1.0
+        },
+        "melville": {
+          "correct": 30,
+          "total": 30,
+          "accuracy": 1.0
+        },
+        "pardo_bazan": {
+          "correct": 1,
+          "total": 8,
+          "accuracy": 0.125
+        },
+        "proust": {
+          "correct": 43,
+          "total": 43,
+          "accuracy": 1.0
+        },
+        "twain": {
+          "correct": 35,
+          "total": 36,
+          "accuracy": 0.972
+        },
+        "woolf": {
+          "correct": 29,
+          "total": 29,
+          "accuracy": 1.0
+        },
+        "zola": {
+          "correct": 36,
+          "total": 36,
+          "accuracy": 1.0
+        }
+      }
+    }
+  ],
+  "classifier_v8_reference": {
+    "accuracy_705": 0.912,
+    "sampled_50per": 0.886,
+    "flaubert_sampled": "1/19 -> zola",
+    "source": "results/classifier_results.json"
+  }
+}

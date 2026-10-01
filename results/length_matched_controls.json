@@ -1,0 +1,29 @@
+{
+  "budget_words": 500,
+  "results": [
+    {
+      "method": "delta_top500_lenmatch500",
+      "accuracy": 0.7262,
+      "flaubert": "13/19"
+    },
+    {
+      "method": "delta_top1000_lenmatch500",
+      "accuracy": 0.6652,
+      "flaubert": "14/19"
+    },
+    {
+      "method": "delta_top3000_lenmatch500",
+      "accuracy": 0.5489,
+      "flaubert": "14/19"
+    },
+    {
+      "method": "charsvm_lenmatch500",
+      "accuracy": 0.9972,
+      "flaubert": "19/19"
+    },
+    {
+      "method": "logreg_lenmatch500",
+      "accuracy": 0.9433
+    }
+  ]
+}
