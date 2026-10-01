@@ -155,6 +155,9 @@ Final train loss: 0.93. Final eval loss: 0.34. Total wall time: 4,484 s on a sin
 
 ## Limitations
 
+- **Split leakage (found 2026-10-01).** The published 91.2% was measured on a hash-bucketed passage split in which 31% of adjacent 1000-word windows from the SAME BOOK straddle train/eval. Baselines on a work-blocked split (no book on both sides) collapse: char n-gram SVM 100% -> 46.2%, logreg 97.5% -> 24.7%. Burrows' Delta is the only standard method that survives work-blocking (88.0%). This model's work-blocked accuracy has NOT been measured (needs GPU); treat 91.2% as inflated by within-work leakage, alongside every other number on the original split. See `splits_blocked/` and `results/blocked_split_baselines.json`.
+
+
 - **Closed-set only.** The model has no reject option. It will always emit one of the 14 trained labels, even for authors outside the label set: probe texts by authors not in training (e.g. contemporary Nigerian poets) are forced onto the nearest trained label (Hugo, Maupassant), and pastiches of trained authors (Twain, Joyce) also collapse to Maupassant. "It runs and returns a high-confidence label" is not evidence of attribution in the open world. Generalization to unseen authors is untested; treat every output on out-of-label text as unreliable.
 - **Per-author failure: Flaubert.** On the 50-per-author sampled eval, Flaubert scores 1/19 (5.3%), with nearly all errors going to Zola (both French Naturalists). Six authors are perfect, but this failure is the model's biggest known weakness on in-distribution data.
 - **Italian = one author.** The Italian slice is Manzoni only, so 100% Italian accuracy is largely language identification, not fine authorship discrimination.
