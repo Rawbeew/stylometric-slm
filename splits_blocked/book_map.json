@@ -1,0 +1,206 @@
+[
+  {
+    "lang": "en",
+    "author": "dickens",
+    "books": [
+      {
+        "pg": "pg766",
+        "book": "David Copperfield",
+        "n": 352,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "author": "joyce",
+    "books": [
+      {
+        "pg": "pg4217",
+        "book": "Portrait of the Artist",
+        "n": 82,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "author": "melville",
+    "books": [
+      {
+        "pg": "pg10712",
+        "book": "White Jacket",
+        "n": 59,
+        "split": "train"
+      },
+      {
+        "pg": "pg15859",
+        "book": "Piazza Tales",
+        "n": 75,
+        "split": "eval"
+      },
+      {
+        "pg": "pg2701",
+        "book": "Moby-Dick",
+        "n": 73,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "author": "twain",
+    "books": [
+      {
+        "pg": "pg3176",
+        "book": "Innocents Abroad",
+        "n": 189,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "author": "woolf",
+    "books": [
+      {
+        "pg": "pg1245",
+        "book": "Night and Day",
+        "n": 110,
+        "split": "eval"
+      },
+      {
+        "pg": "pg5670",
+        "book": "Jacob's Room",
+        "n": 51,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "author": "cervantes",
+    "books": [
+      {
+        "pg": "pg2000",
+        "book": "Don Quijote",
+        "n": 381,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "author": "galdos",
+    "books": [
+      {
+        "pg": "pg17013",
+        "book": "Fortunata y Jacinta",
+        "n": 342,
+        "split": "train"
+      },
+      {
+        "pg": "pg17340",
+        "book": "Marianela",
+        "n": 48,
+        "split": "eval"
+      }
+    ]
+  },
+  {
+    "lang": "es",
+    "author": "pardo_bazan",
+    "books": [
+      {
+        "pg": "pg17491",
+        "book": "La Tribuna",
+        "n": 13,
+        "split": "eval"
+      },
+      {
+        "pg": "pg68452",
+        "book": "La piedra angular",
+        "n": 48,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "fr",
+    "author": "flaubert",
+    "books": [
+      {
+        "pg": "pg2413",
+        "book": "Madame Bovary",
+        "n": 113,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "fr",
+    "author": "hugo",
+    "books": [
+      {
+        "pg": "pg135",
+        "book": "Les Mis\u00e9rables",
+        "n": 378,
+        "split": "eval"
+      },
+      {
+        "pg": "pg2610",
+        "book": "Notre-Dame de Paris",
+        "n": 178,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "fr",
+    "author": "maupassant",
+    "books": [
+      {
+        "pg": "pg3090",
+        "book": "Original Short Stories",
+        "n": 484,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "fr",
+    "author": "proust",
+    "books": [
+      {
+        "pg": "pg2650",
+        "book": "Du c\u00f4t\u00e9 de chez Swann",
+        "n": 162,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "fr",
+    "author": "zola",
+    "books": [
+      {
+        "pg": "pg5711",
+        "book": "Germinal",
+        "n": 162,
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "lang": "it",
+    "author": "manzoni",
+    "books": [
+      {
+        "pg": "pg45334",
+        "book": "I Promessi Sposi (2014 ed.)",
+        "n": 215,
+        "split": "train"
+      }
+    ]
+  }
+]

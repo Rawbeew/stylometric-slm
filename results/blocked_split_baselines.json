@@ -1,0 +1,59 @@
+{
+  "split": "work-blocked (no book in both train and eval)",
+  "n_train": 2891,
+  "n_eval": 624,
+  "eval_authors": [
+    "galdos",
+    "hugo",
+    "melville",
+    "pardo_bazan",
+    "woolf"
+  ],
+  "note": "9 of 14 authors are single-book in the sources; they are train-only. The blocked eval measures generalization to UNSEEN BOOKS by the 5 multi-book authors.",
+  "results": [
+    {
+      "method": "charsvm_3-5_blocked",
+      "accuracy": 0.4615,
+      "per_author": {
+        "galdos": 1.0,
+        "hugo": 0.458,
+        "melville": 0.893,
+        "pardo_bazan": 0.0,
+        "woolf": 0.0
+      }
+    },
+    {
+      "method": "logreg_blocked",
+      "accuracy": 0.2468,
+      "per_author": {
+        "galdos": 1.0,
+        "hugo": 0.167,
+        "melville": 0.573,
+        "pardo_bazan": 0.0,
+        "woolf": 0.0
+      }
+    },
+    {
+      "method": "delta_top500_blocked",
+      "accuracy": 0.8798,
+      "per_author": {
+        "galdos": 0.792,
+        "hugo": 0.95,
+        "melville": 0.947,
+        "pardo_bazan": 0.846,
+        "woolf": 0.636
+      }
+    },
+    {
+      "method": "delta_top1000_blocked",
+      "accuracy": 0.7452,
+      "per_author": {
+        "galdos": 0.312,
+        "hugo": 0.857,
+        "melville": 1.0,
+        "pardo_bazan": 1.0,
+        "woolf": 0.345
+      }
+    }
+  ]
+}
