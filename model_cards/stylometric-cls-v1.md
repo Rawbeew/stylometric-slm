@@ -48,7 +48,7 @@ This is the **classifier regime** (v8). For the same architecture framed as seq2
 
 > **Method comparison paper is an unpublished draft.** The encoder-only-vs-seq2seq comparison reported here is documented in `paper/drafts/encoder_only_beats_seq2seq_v2.md` in the companion repo (v1 also retained for history) but has not been assigned a preprint DOI; it is not the same publication as the related Zenodo item below.
 >
-> **Related, peer-reviewed publication in the same research program:** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study (binary human-vs-LLM-imitation differentiation on Sule Egya and Toyin Shittu).
+> **Related preprint (not peer-reviewed) in the same research program:** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study (binary human-vs-LLM-imitation differentiation on Sule Egya and Toyin Shittu). A revision addressing length-matching limitations is planned; see the model card's Limitations section for why the TTR findings there are length-confounded.
 
 ## TL;DR
 
@@ -155,6 +155,11 @@ Final train loss: 0.93. Final eval loss: 0.34. Total wall time: 4,484 s on a sin
 
 ## Limitations
 
+- **Closed-set only.** The model has no reject option. It will always emit one of the 14 trained labels, even for authors outside the label set: probe texts by authors not in training (e.g. contemporary Nigerian poets) are forced onto the nearest trained label (Hugo, Maupassant), and pastiches of trained authors (Twain, Joyce) also collapse to Maupassant. "It runs and returns a high-confidence label" is not evidence of attribution in the open world. Generalization to unseen authors is untested; treat every output on out-of-label text as unreliable.
+- **Per-author failure: Flaubert.** On the 50-per-author sampled eval, Flaubert scores 1/19 (5.3%), with nearly all errors going to Zola (both French Naturalists). Six authors are perfect, but this failure is the model's biggest known weakness on in-distribution data.
+- **Italian = one author.** The Italian slice is Manzoni only, so 100% Italian accuracy is largely language identification, not fine authorship discrimination.
+- **Corpus and split are not shipped.** Both are gitignored; the repo provides a rebuild script, not a replication package. Independent verification of the 91.2% number requires re-running the pipeline end to end.
+- **Baselines are thin.** Logistic regression on 605 passages scores 71.7%, but the eval slices do not match (605 vs 705), and no Burrows' Delta, character n-gram SVM, or frozen mT5/XLM-R probe comparison has been run.
 - **Small corpus, small author set.** Generalization to unseen authors is untested.
 - **Genre-fixed.** Trained on literary prose.
 - **Length-bias.** Authors with longer average sentence length are easier to detect (standard stylometric artifact).
@@ -192,7 +197,7 @@ pred_idx = probs.argmax(dim=-1).item()
 
 - **Companion model (seq2seq baseline):** [`Chaiir/stylometric-mt5-v1`](https://huggingface.co/Chaiir/stylometric-mt5-v1)
 - **Unpublished method paper (canonical draft, journal-aligned numbers, correct ORCID):** [encoder_only_beats_seq2seq_v2.md](https://github.com/Rawbeew/stylometric-slm/blob/master/paper/drafts/encoder_only_beats_seq2seq_v2.md) in the companion repo. v1 retained for history. Not yet assigned a preprint DOI.
-- **Related peer-reviewed application paper (Zenodo):** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study, binary human-vs-LLM-author differentiation on Sule Egya (E.E. Sule) and Toyin Shittu, 16 human + 16 LLM-imitated passages each. Cited here because it is the same author's broader stylometric-research program.
+- **Related preprint (not peer-reviewed) (Zenodo):** Raji, R. (2026). *Voice or Mask? Stylometric Forensic Analysis of Two Contemporary Nigerian Poets.* [doi:10.5281/zenodo.22725022](https://doi.org/10.5281/zenodo.22725022) — a different study, binary human-vs-LLM-author differentiation on Sule Egya (E.E. Sule) and Toyin Shittu, 16 human + 16 LLM-imitated passages each. Cited here because it is the same author's broader stylometric-research program. Note: type-token-ratio comparisons in that preprint are length-confounded (human passages averaged ~450 words, LLM passages ~164) and are being revised; the syllable-gap finding is not length-sensitive in the same way.
 - **Code + corpus + reproducibility journal:** <https://github.com/Rawbeew/stylometric-slm> — 12 timestamped journal entries, every command/output/error quoted verbatim.
 
 ## Citation
